@@ -73,8 +73,8 @@ public class Thwomp : MonoBehaviour
            rb.AddForce(-force);
            if (killingArea.getPlayerIsInArea() && groundDistance > 1f)
             {
-                DeathAndRespawn.instance.Die();
-                while (DeathAndRespawn.instance.playerDying)
+                GameManager.instance.Die();
+                while (GameManager.instance.playerDying)
                 {
                     yield return null;
                 }
@@ -84,7 +84,7 @@ public class Thwomp : MonoBehaviour
         }
     }
 
-    IEnumerator Restart()
+    public IEnumerator Restart()
     {
         isFalling = false;
         rb.velocity = Vector3.zero;

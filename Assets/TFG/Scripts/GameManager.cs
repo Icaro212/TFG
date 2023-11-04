@@ -2,20 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeathAndRespawn : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
-    //Death Consecuences
-    public static DeathAndRespawn instance;
-    public bool playerDying { get; set; }
 
-//Managing Death
-private Rigidbody2D rb;
+    //Instance
+    public static GameManager instance;
+
+    //Restart objects when Dying
+    public string activeRoom { set; get; }
+    public Dictionary<string, HashSet<GameObject>> objectsInRoom { set; get; }
+
+    //Player Death
+    private Rigidbody2D rb;
     private Collider2D col;
     private Animator anim;
     private PlayerMovement script;
     public Transform currentCheckPoint;
     private Transform playerPosition;
-
+    public bool playerDying { get; set; }
 
 
 
@@ -24,8 +28,7 @@ private Rigidbody2D rb;
         instance = this;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         playerPosition = GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
@@ -42,14 +45,6 @@ private Rigidbody2D rb;
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.gameObject.CompareTag("Spikes"))
-        {
-            Die();
-        }
-    }
-
     private void Respawn()
     {
         playerPosition.position = Vector3.zero;
@@ -60,6 +55,7 @@ private Rigidbody2D rb;
         anim.SetTrigger("respawn");
         col.isTrigger = false;
         rb.bodyType = RigidbodyType2D.Dynamic;
+        StartCoroutine(RestartingRoom(activeRoom));
     }
 
     public void Die()
@@ -69,5 +65,17 @@ private Rigidbody2D rb;
         rb.bodyType = RigidbodyType2D.Static;
         playerDying = true;
         col.isTrigger = true;
+    }
+
+    public IEnumerator RestartingRoom(string room)
+    {
+        yield return null;
+        HashSet<GameObject> objects = objectsInRoom[room];
+        //Según se vaya ampliando con otros tipos podemos buscar una manera de acceder al método manualmente
+        foreach (GameObject obj in objects) 
+        {
+            Thwomp elemt = obj.gameObject.GetComponent<Thwomp>();
+            StartCoroutine(elemt.Restart());
+        }
     }
 }

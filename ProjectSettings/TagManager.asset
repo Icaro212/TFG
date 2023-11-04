@@ -7,6 +7,8 @@ TagManager:
   - Ground
   - Spikes
   - Foreground
+  - Object
+  - ObjectReload
   layers:
   - Default
   - TransparentFX
