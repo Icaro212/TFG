@@ -6,7 +6,7 @@ public class CameraManager : MonoBehaviour
 {
     public GameObject virtualCam;
     public GameObject room;
-    private HashSet<GameObject> objectsInRoom;
+
 
     //Player enter and exits room and thus the camaras change 
     private void OnTriggerEnter2D(Collider2D other)
@@ -19,7 +19,18 @@ public class CameraManager : MonoBehaviour
 
         if (other.CompareTag("ObjectReload"))
         {
-            objectsInRoom.Add(other.gameObject);
+            if (!GameManager.instance.objectsInRoom.ContainsKey(room.name))
+            {
+                HashSet<GameObject> objectsInRoom = new HashSet<GameObject>();
+                objectsInRoom.Add(other.gameObject);
+                GameManager.instance.objectsInRoom.Add(room.name, objectsInRoom);
+            }
+            else
+            {
+                HashSet<GameObject> objectsInRoom = GameManager.instance.objectsInRoom[room.name];
+                objectsInRoom.Add(other.gameObject);
+                GameManager.instance.objectsInRoom.Add(room.name, objectsInRoom);
+            }
         }
     }
 

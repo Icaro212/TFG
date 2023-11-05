@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
         col = GetComponent<Collider2D>();
         anim = GetComponent<Animator>();
         script = GetComponent<PlayerMovement>();
+        objectsInRoom = new Dictionary<string, HashSet<GameObject>>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -70,12 +71,15 @@ public class GameManager : MonoBehaviour
     public IEnumerator RestartingRoom(string room)
     {
         yield return null;
-        HashSet<GameObject> objects = objectsInRoom[room];
-        //Según se vaya ampliando con otros tipos podemos buscar una manera de acceder al método manualmente
-        foreach (GameObject obj in objects) 
+        if (objectsInRoom.ContainsKey(room))
         {
-            Thwomp elemt = obj.gameObject.GetComponent<Thwomp>();
-            StartCoroutine(elemt.Restart());
+            HashSet<GameObject> objects = objectsInRoom[room];
+            //Según se vaya ampliando con otros tipos podemos buscar una manera de acceder al método manualmente
+            foreach (GameObject obj in objects)
+            {
+                Thwomp elemt = obj.gameObject.GetComponent<Thwomp>();
+                StartCoroutine(elemt.Restart());
+            }
         }
     }
 }
