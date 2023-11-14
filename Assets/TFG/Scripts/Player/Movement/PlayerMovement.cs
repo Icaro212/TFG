@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     #region Variables
     //General Movement parameters
     public PlayerData data;
+    public Transform playerTransform;
     private Rigidbody2D rb;
     private float movementInputDirection;
     private bool isFacingRight = true;
@@ -26,6 +28,23 @@ public class PlayerMovement : MonoBehaviour
     private bool isWallJumping = false;
     private float currentWallJumpDirection;
     #endregion
+
+    // For the case that the player enters an specific room and comes back;
+    private void Awake()
+    {
+        GameObject[] Doors = GameObject.FindGameObjectsWithTag("Door");
+        foreach (GameObject Door in Doors)
+        {
+            SceneTransaction DoorScript = Door.GetComponent<SceneTransaction>();
+            if (DoorScript.playerHasEnter && DoorScript.sceneOrigin == SceneManager.GetActiveScene().name)
+            {
+                playerTransform.position = DoorScript.playerPosition;
+                Destroy(Door);
+            }
+
+        }
+
+    }
 
     // Start is called before the first frame update
     private void Start()

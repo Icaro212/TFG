@@ -9,6 +9,7 @@ TagManager:
   - Foreground
   - Object
   - ObjectReload
+  - Door
   layers:
   - Default
   - TransparentFX

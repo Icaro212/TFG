@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6860879957833710589}
   m_Layer: 0
   m_Name: TransactionPoint
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -77,7 +77,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c78ca3e52edd494b8f3f5ea931f5dd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Canvas: {fileID: 6860879959208958370}
+  canvas: {fileID: 6860879959208958370}
+  sceneDestination: 
+  sceneOrigin: 
+  PlayerPrefav: {fileID: 2233533158116535570, guid: 9d3a0a3dd59cb9c4d8c71bdc5c1dc1be, type: 3}
 --- !u!1 &6860879959208958370
 GameObject:
   m_ObjectHideFlags: 0

@@ -33499,7 +33499,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 342520857}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 153.2, y: -63.9, z: 0}
+  m_LocalPosition: {x: -16.3, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -33537,6 +33537,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 2950988abeb179243ab8eb7cb95b5193, type: 2}
+  playerTransform: {fileID: 342520861}
   groundCheck: {fileID: 465578846}
   wallCheck: {fileID: 1734708956}
 --- !u!95 &342520865
@@ -34783,6 +34784,11 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &1266286137 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6860879959208958370, guid: 7bbdcf4aef49822458c94eee95954a3d, type: 3}
+  m_PrefabInstance: {fileID: 6860879957542027731}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1314623867 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 265206367375696820, guid: fba94866fc2caaa458dbac895deb4d44, type: 3}
@@ -36021,7 +36027,27 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6860879957833710589, guid: 7bbdcf4aef49822458c94eee95954a3d, type: 3}
+      propertyPath: Player
+      value: 
+      objectReference: {fileID: 2233533158116535570, guid: 9d3a0a3dd59cb9c4d8c71bdc5c1dc1be, type: 3}
+    - target: {fileID: 6860879957833710589, guid: 7bbdcf4aef49822458c94eee95954a3d, type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 1266286137}
+    - target: {fileID: 6860879957833710589, guid: 7bbdcf4aef49822458c94eee95954a3d, type: 3}
+      propertyPath: sceneOrigin
+      value: Tutorial
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860879957833710589, guid: 7bbdcf4aef49822458c94eee95954a3d, type: 3}
+      propertyPath: PlayerPrefav
+      value: 
+      objectReference: {fileID: 2233533158116535570, guid: 9d3a0a3dd59cb9c4d8c71bdc5c1dc1be, type: 3}
+    - target: {fileID: 6860879957833710589, guid: 7bbdcf4aef49822458c94eee95954a3d, type: 3}
       propertyPath: SceneDestination
+      value: Tutorial b
+      objectReference: {fileID: 0}
+    - target: {fileID: 6860879957833710589, guid: 7bbdcf4aef49822458c94eee95954a3d, type: 3}
+      propertyPath: sceneDestination
       value: Tutorial b
       objectReference: {fileID: 0}
     - target: {fileID: 6860879957833710591, guid: 7bbdcf4aef49822458c94eee95954a3d, type: 3}
