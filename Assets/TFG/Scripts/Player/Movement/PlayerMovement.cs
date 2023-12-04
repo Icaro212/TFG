@@ -27,7 +27,11 @@ public class PlayerMovement : MonoBehaviour
     //Wall Jump parameters
     private bool isWallJumping = false;
     private float currentWallJumpDirection;
+
+    //Magic parameters
+    public bool isImpulsePointAct { set; get; }
     #endregion
+    public TrailRenderer trailRenderer { set; get; }
 
     // For the case that the player enters an specific room and comes back;
     private void Awake()
@@ -51,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         data.anim = GetComponent<Animator>();
+        trailRenderer = GetComponent<TrailRenderer>();
     }
 
     // Update is called once per frame. We will used to control all the checks necesary for the enviroment.
@@ -60,13 +65,16 @@ public class PlayerMovement : MonoBehaviour
         CheckMomentDirectionAnimation();
         UpdateAnimations();
         TimeCounter();
-        GravityConditions();
     }
     //This calculates before the frame happends meaning that the physics of the in bluild engine will be more precise
     private void FixedUpdate()
     {
-        ApplyMovement();
-        CheckSurrondings();
+        GravityConditions();
+        if (!isImpulsePointAct)
+        {
+            ApplyMovement();
+            CheckSurrondings();
+        }
     }
 
     #region Controls
@@ -168,7 +176,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void GravityConditions()
     {
-        if (isTouchingWall && !isGrounded && rb.velocity.y < 0 && rb.velocity.y <= data.wallSlideSpeed) //If it´s wallSliding
+        if ((isTouchingWall && !isGrounded && rb.velocity.y < 0 && rb.velocity.y <= data.wallSlideSpeed) || isImpulsePointAct) //If it´s wallSliding or ImpulsePoint
         {
             SetGravity(0);
         }
