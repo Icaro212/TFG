@@ -107,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
     private void Run(float interpolVal)
     {
         
-        float targetSpeed = movementInputDirection * data.maxSpeed;
+        float targetSpeed = isGrounded ?  movementInputDirection * data.maxSpeed : movementInputDirection * data.maxSpeedAir;
         if (targetSpeed.Equals(0) && !isWallJumping)
         {
             Vector2 auxVector = new Vector2(0, rb.velocity.y);
@@ -119,10 +119,13 @@ public class PlayerMovement : MonoBehaviour
 
             float accelVal;
             if (data.LastOnGroundTime > 0)
+            {
                 accelVal = (Mathf.Abs(targetSpeed) > 0.01f) ? data.runAccelAmount : data.runDeccelAmount;
+            }
             else
+            {
                 accelVal = (Mathf.Abs(targetSpeed) > 0.01f) ? data.runAccelAmount * data.accelInAir : data.runDeccelAmount * data.deccelInAir;
-
+            }
             float speedDif = targetSpeed - rb.velocity.x;
             float movement = speedDif * accelVal;
             rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
@@ -176,23 +179,33 @@ public class PlayerMovement : MonoBehaviour
 
     private void GravityConditions()
     {
-        if ((isTouchingWall && !isGrounded && rb.velocity.y < 0 && rb.velocity.y <= data.wallSlideSpeed) || isImpulsePointAct) //If it´s wallSliding or ImpulsePoint
+        if (isTouchingWall && !isGrounded && rb.velocity.y < 0 && rb.velocity.y <= data.wallSlideSpeed) //If it´s wallSliding 
         {
             SetGravity(0);
         }
-        else if ((isWallJumping || !isGrounded) && rb.velocity.y < 0)
+        else if(isImpulsePointAct) //Impulse Point Active
         {
-            SetGravity(data.gravityScale * data.jumpHangGravityMul);
+            SetGravity(0);
         }
-        else if (isJumpCut || rb.velocity.y < 0) //If the player cuts the jump or starts to fall from a jump
+        else if (isJumpCut) //Jump Button is release and thus the jump is cut
         {
             SetGravity(data.gravityScale * data.fallGravityMult);
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -data.maxFallSpeed));
         }
-        else
+        else if((!isGrounded || isWallJumping || rb.velocity.y < 0) && Mathf.Abs(rb.velocity.y) < data.jumpHangTimeThreshold) //Jump is reaching its apex and we want to stay a little there
+        {
+            SetGravity(data.gravityScale * data.jumpHangGravityMul);
+        }
+        else if (rb.velocity.y < 0) //Normal Fall
+        {
+            SetGravity(data.gravityScale * data.fallGravityMult);
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -data.maxFallSpeed));
+        }
+        else //Default Case
         {
             SetGravity(data.gravityScale);
         }
+
     }
 
     private void SetGravity(float gravityScale)

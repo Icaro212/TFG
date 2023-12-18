@@ -70,8 +70,9 @@ public class Thwomp : MonoBehaviour
     {
         while (groundDistance > 0.25 && isFalling)
         {
-           rb.AddForce(-force);
-           if (killingArea.getPlayerIsInArea() && groundDistance > 1f)
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            rb.AddForce(-force);
+            if (killingArea.getPlayerIsInArea() && groundDistance > 1f)
             {
                 GameManager.instance.Die();
                 while (GameManager.instance.playerDying)
@@ -88,6 +89,7 @@ public class Thwomp : MonoBehaviour
     {
         isFalling = false;
         rb.velocity = Vector3.zero;
+        rb.bodyType = RigidbodyType2D.Static;
         thwompPosition.position = startPosition;
         yield return null;
     }

@@ -22,9 +22,14 @@ public class MagicBar : MonoBehaviour
         barImage.fillAmount = fillPercentaje;
     }
 
-
     public bool CheckValidityMovement(int value)
     {
         return currentPoints >= value;
+    }
+
+    public void Reset()
+    {
+        currentPoints = maxPoints;
+        barImage.fillAmount = 1;
     }
 }

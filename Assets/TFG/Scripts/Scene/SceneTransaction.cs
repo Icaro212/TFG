@@ -46,8 +46,11 @@ public class SceneTransaction : MonoBehaviour
     private IEnumerator GoToScene()
     {
         DontDestroyOnLoad(this.gameObject);
+        isPlayerInArea = false;
+        canvas.SetActive(false);
+        yield return null;
         SceneManager.LoadScene(sceneDestination);
-        while(SceneManager.GetActiveScene().name == sceneOrigin)
+        while (SceneManager.GetActiveScene().name == sceneOrigin)
         {
             yield return null;
         }

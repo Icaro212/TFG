@@ -6,6 +6,14 @@ public class CameraManager : MonoBehaviour
 {
     public GameObject virtualCam;
     public GameObject room;
+    public GameObject canvas;
+    private MagicBar bar;
+
+
+    private void Start()
+    {
+        bar = canvas.GetComponent<MagicBar>();
+    }
 
 
     //Player enter and exits room and thus the camaras change 
@@ -15,6 +23,7 @@ public class CameraManager : MonoBehaviour
         {
             virtualCam.SetActive(true);
             GameManager.instance.activeRoom = room.name;
+            bar.Reset();
         }
 
         if (other.CompareTag("ObjectReload"))
@@ -27,9 +36,7 @@ public class CameraManager : MonoBehaviour
             }
             else
             {
-                HashSet<GameObject> objectsInRoom = GameManager.instance.objectsInRoom[room.name];
-                objectsInRoom.Add(other.gameObject);
-                GameManager.instance.objectsInRoom.Add(room.name, objectsInRoom);
+                GameManager.instance.objectsInRoom[room.name].Add(other.gameObject);
             }
         }
     }

@@ -35,7 +35,7 @@ public class ImpulsePoint : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if(playerInArea && Input.GetButtonDown("Fire3"))
+        if(playerInArea && bar.CheckValidityMovement(habilityCost) && Input.GetButtonDown("Fire3"))
         {
             originalPlayerPos = player.transform.position;
             StartCoroutine(Impulse());
@@ -80,6 +80,7 @@ public class ImpulsePoint : MonoBehaviour
         playerScript.isImpulsePointAct = true;
         bar.Cost(habilityCost);
         yield return null;
+        playerRB.velocity = Vector2.zero;
         while (Vector2.Distance(selfPosition.position, player.transform.position) >= 1)
         {
             playerScript.trailRenderer.emitting = true;
