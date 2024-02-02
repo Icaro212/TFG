@@ -21,6 +21,8 @@ public class PlayerData : ScriptableObject
     [Header("Jump")]
     public float jumpForce = 14.0f;
     public float groundCheckRadius;
+    public float jumpHangTimeThreshold;
+    public float maxSpeedAir;
     public float accelInAir;
     public float deccelInAir;
 

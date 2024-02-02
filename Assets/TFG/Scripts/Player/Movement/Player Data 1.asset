@@ -12,25 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4749fb78967c2c49b9bec92f4bba371, type: 3}
   m_Name: Player Data 1
   m_EditorClassIdentifier: 
-  movementSpeed: 9
-  maxSpeed: 12
-  maxFallSpeed: 13
+  movementSpeed: 4
+  maxSpeed: 9
+  maxFallSpeed: 20
   runAccelAmount: 59
   runDeccelAmount: 72
-  gravityScale: 2.5
+  gravityScale: 2.75
   fallGravityMult: 2
   jumpHangGravityMul: 1.25
-  jumpForce: 16
+  jumpForce: 13
   groundCheckRadius: 0.4
-  accelInAir: 1
-  deccelInAir: 1
+  jumpHangTimeThreshold: 0.5
+  maxSpeedAir: 8
+  accelInAir: 0.5
+  deccelInAir: 0.9
   wallCheckDistance: 0.75
   wallSlideSpeed: 8
   wallSlideAccel: -1
-  wallJumpDirection: 1
+  wallJumpDirection: -1
   wallJumpVector: {x: 10, y: 16}
   coyoteTime: 0.15
-  LastOnGroundTime: -2.9453254
+  LastOnGroundTime: 0.1386197
   anim: {fileID: 0}
   layerMask:
     serializedVersion: 2
