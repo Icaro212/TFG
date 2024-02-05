@@ -27,6 +27,13 @@ public class Thwomp : MonoBehaviour
     KillingArea killingArea;
     private bool isFalling;
 
+    //Attach Objects
+    [SerializeField] private Optional<GameObject> optionalObject1;
+    [SerializeField] private Optional<GameObject> optionalObject2;
+    [SerializeField] private Optional<GameObject> optionalObject3;
+    [SerializeField] private Optional<GameObject> optionalObject4;
+
+
     private void Start()
     {
         startPosition = thwompPosition.position;
@@ -35,6 +42,7 @@ public class Thwomp : MonoBehaviour
     private void Update()
     {
         Fall();
+        FollowMovement();
     }
 
     private void FixedUpdate()
@@ -55,6 +63,30 @@ public class Thwomp : MonoBehaviour
             isFalling = true;
             StartCoroutine(Falling());
         }
+    }
+
+    private void FollowMovement()
+    {
+        if (optionalObject1.Enabled)
+        {
+            optionalObject1.Value.transform.position = transform.TransformPoint(optionalObject1.Position);
+        }
+
+        if (optionalObject2.Enabled)
+        {
+            optionalObject2.Value.transform.position = transform.TransformPoint(optionalObject2.Position);
+        }
+
+        if (optionalObject3.Enabled)
+        {
+            optionalObject3.Value.transform.position = transform.TransformPoint(optionalObject3.Position);
+        }
+
+        if (optionalObject4.Enabled)
+        {
+            optionalObject4.Value.transform.position = transform.TransformPoint(optionalObject4.Position);
+        }
+
     }
 
     private void OnCollisionEnter2D(Collision2D other)

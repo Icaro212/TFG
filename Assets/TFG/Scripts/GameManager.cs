@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Respawn()
+    private void Respawn() //Este Método se llama desde Unity en la Animación
     {
         playerPosition.position = Vector3.zero;
         playerPosition.position = currentCheckPoint.position;
