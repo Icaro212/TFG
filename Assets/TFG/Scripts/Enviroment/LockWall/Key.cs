@@ -22,7 +22,6 @@ public class Key : MonoBehaviour
         {
             Vector2 direction = objective.transform.position - transform.position;
             direction.Normalize();
-
             transform.Translate(direction *8* Time.deltaTime);
         }
     }

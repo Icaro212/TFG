@@ -32,7 +32,7 @@ MonoBehaviour:
   wallJumpDirection: -1
   wallJumpVector: {x: 10, y: 16}
   coyoteTime: 0.15
-  LastOnGroundTime: 0.1386197
+  LastOnGroundTime: -6.77955
   anim: {fileID: 0}
   layerMask:
     serializedVersion: 2

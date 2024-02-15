@@ -7,12 +7,20 @@ public class LockWall : MonoBehaviour
 
     [SerializeField] private int keys;
     public GameObject wall;
-    
+    private Animator anim;
+
+    private void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
+
     private void Update()
     { 
         if(keys <= 0)
         {
             wall.GetComponent<BoxCollider2D>().isTrigger = true;
+            anim.SetTrigger("Openning");
+
         }
     }
 

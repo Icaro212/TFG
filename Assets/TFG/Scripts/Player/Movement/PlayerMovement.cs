@@ -30,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
 
     //Magic parameters
     public bool isImpulsePointAct { set; get; }
+    public bool isSpringActive { set; get; }
     #endregion
     public TrailRenderer trailRenderer { set; get; }
 
@@ -70,10 +71,10 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         GravityConditions();
-        if (!isImpulsePointAct)
+        CheckSurrondings();
+        if (!isImpulsePointAct && !isSpringActive)
         {
             ApplyMovement();
-            CheckSurrondings();
         }
     }
 
@@ -108,7 +109,7 @@ public class PlayerMovement : MonoBehaviour
     {
         
         float targetSpeed = isGrounded ?  movementInputDirection * data.maxSpeed : movementInputDirection * data.maxSpeedAir;
-        if (targetSpeed.Equals(0) && !isWallJumping)
+        if (targetSpeed.Equals(0) && !isWallJumping && !isSpringActive)
         {
             Vector2 auxVector = new Vector2(0, rb.velocity.y);
             rb.velocity = auxVector;
@@ -165,6 +166,7 @@ public class PlayerMovement : MonoBehaviour
             isGrounded = true;
             isJumpCut = false;
             isWallJumping = false;
+            isSpringActive = false;
             data.LastOnGroundTime = data.coyoteTime;
         }
         else
@@ -183,9 +185,13 @@ public class PlayerMovement : MonoBehaviour
         {
             SetGravity(0);
         }
-        else if(isImpulsePointAct) //Impulse Point Active
+        else if(isImpulsePointAct) //Impulse  
         {
             SetGravity(0);
+        }
+        else if (isSpringActive)
+        {
+            SetGravity(data.gravityScale);
         }
         else if (isJumpCut) //Jump Button is release and thus the jump is cut
         {
