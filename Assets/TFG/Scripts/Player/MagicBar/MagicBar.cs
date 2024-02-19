@@ -15,14 +15,14 @@ public class MagicBar : MonoBehaviour
         currentPoints = maxPoints;
     }
 
-    public void Cost(int value)
+    public void Cost(float value)
     {
-        currentPoints = currentPoints - value;
+        currentPoints =  currentPoints - (int) value;
         float fillPercentaje =  (float) currentPoints / maxPoints;
         barImage.fillAmount = fillPercentaje;
     }
 
-    public bool CheckValidityMovement(int value)
+    public bool CheckValidityMovement(float value)
     {
         return currentPoints >= value;
     }

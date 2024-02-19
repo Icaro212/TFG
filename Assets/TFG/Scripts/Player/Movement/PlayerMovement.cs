@@ -31,6 +31,8 @@ public class PlayerMovement : MonoBehaviour
     //Magic parameters
     public bool isImpulsePointAct { set; get; }
     public bool isSpringActive { set; get; }
+    public bool isWallClimbingActive { set; get; }
+    public bool isWallClimbingHoriActive { set; get; }
     #endregion
     public TrailRenderer trailRenderer { set; get; }
 
@@ -192,6 +194,14 @@ public class PlayerMovement : MonoBehaviour
         else if (isSpringActive)
         {
             SetGravity(data.gravityScale);
+        }
+        else if (isWallClimbingActive)
+        {
+            SetGravity(0);
+        }
+        else if (isWallClimbingHoriActive)
+        {
+            SetGravity(0);
         }
         else if (isJumpCut) //Jump Button is release and thus the jump is cut
         {
