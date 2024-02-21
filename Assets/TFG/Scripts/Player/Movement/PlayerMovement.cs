@@ -30,11 +30,12 @@ public class PlayerMovement : MonoBehaviour
 
     //Magic parameters
     public bool isImpulsePointAct { set; get; }
+    public TrailRenderer trailRenderer { set; get; }
     public bool isSpringActive { set; get; }
     public bool isWallClimbingActive { set; get; }
     public bool isWallClimbingHoriActive { set; get; }
     #endregion
-    public TrailRenderer trailRenderer { set; get; }
+
 
     // For the case that the player enters an specific room and comes back;
     private void Awake()
@@ -92,11 +93,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Jump()
     {
-        if (isGrounded || (data.LastOnGroundTime > 0))
-        {
-            rb.AddForce(Vector2.up * data.jumpForce, ForceMode2D.Impulse);
-        }
-        else if (isTouchingWall && !isGrounded)
+        if (isTouchingWall && !isGrounded)
         {
             currentWallJumpDirection = data.wallJumpDirection;
             isWallJumping = true;
@@ -104,6 +101,9 @@ public class PlayerMovement : MonoBehaviour
             force.x *= currentWallJumpDirection;
             rb.AddForce(force, ForceMode2D.Impulse);
             Flip();
+        }else if (isGrounded || (data.LastOnGroundTime > 0))
+        {
+            rb.AddForce(Vector2.up * data.jumpForce, ForceMode2D.Impulse);
         }
     }
 

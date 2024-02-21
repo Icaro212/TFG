@@ -28,23 +28,9 @@ public class ClimbingWalls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (hasCollide && (Input.GetButtonDown("Fire3") || playerScript.isWallClimbingActive) && bar.CheckValidityMovement(habilityCostPerSecond))
+        if (hasCollide && Input.GetButtonDown("Fire3")  && bar.CheckValidityMovement(habilityCostPerSecond) && !playerScript.isWallClimbingActive)
         {
-            Debug.Log("Hey");
-            playerScript.isWallClimbingActive = true;
-            float y = Input.GetAxis("Vertical");
-            float speedModifier = y > 0 ? .5f : 1;
-            playerRB.velocity = new Vector2(playerRB.velocity.x, y * (13 * speedModifier));
-            timerCost += Time.deltaTime;
-            if (timerCost >= costInterval)
-            {
-                bar.Cost(habilityCostPerSecond);
-                timerCost = 0f;
-            }
-        }
-        else
-        {
-            playerScript.isWallClimbingActive = false;
+            StartCoroutine(VerticalClimb());
         }
     }
 
@@ -54,7 +40,6 @@ public class ClimbingWalls : MonoBehaviour
         {
             hasCollide = true;
         }
-
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -63,6 +48,25 @@ public class ClimbingWalls : MonoBehaviour
         {
             hasCollide = false;
         }
+    }
+
+    private IEnumerator VerticalClimb()
+    {
+        playerScript.isWallClimbingActive = true;
+        while(bar.CheckValidityMovement(habilityCostPerSecond) && hasCollide)
+        {
+            float y = Input.GetAxis("Vertical");
+            float speedModifier = y > 0 ? .5f : 1;
+            playerRB.velocity = new Vector2(playerRB.velocity.x, y * (13 * speedModifier));
+            timerCost += Time.deltaTime;
+            if (timerCost >= costInterval)
+            {
+                bar.Cost(habilityCostPerSecond);
+                timerCost = 0f;
+            }
+            yield return null;
+        }
+        playerScript.isWallClimbingActive = false;
     }
 
 }
