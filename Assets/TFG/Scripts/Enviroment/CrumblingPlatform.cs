@@ -10,7 +10,7 @@ public class CrumblingPlatform : MonoBehaviour
     private Animator anim;
 
     //Attach Objects
-    [SerializeField] private List<Optional<GameObject>> optionalsObjects;
+    public List<Optional<GameObject>> optionalsObjects;
 
     void Start()
     {
@@ -21,14 +21,7 @@ public class CrumblingPlatform : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player") & !playingAnim)
         {
-            anim.SetTrigger("Crumble");
-            foreach (Optional<GameObject> optional in optionalsObjects)
-            {
-                if (optional.Enabled)
-                {
-                    StartCoroutine(FaceOutOptional(optional.Value));
-                }
-            }
+            Crumble();
         }
         
     }
@@ -38,10 +31,23 @@ public class CrumblingPlatform : MonoBehaviour
         anim.SetTrigger("Reform");
     }
 
-    IEnumerator FaceOutOptional(GameObject optionalObject)
+
+    public void Crumble()
+    {
+        anim.SetTrigger("Crumble");
+        foreach (Optional<GameObject> optional in optionalsObjects)
+        {
+            if (optional.Enabled)
+            {
+                optional.Value.GetComponent<Animator>().SetTrigger("FaceOut");
+            }
+        }
+    }
+    
+    
+    public IEnumerator CrumbleRoutine()
     {
         yield return null;
-        optionalObject.GetComponent<Animator>().SetTrigger("FaceOut");
     }
 
 }

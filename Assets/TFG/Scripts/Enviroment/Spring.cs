@@ -48,8 +48,6 @@ public class Spring : MonoBehaviour
             yield return null;
         }
         playerScript.isSpringActive = false;
-
-
     }
 
     private void SetSpringWaiting()
@@ -60,6 +58,16 @@ public class Spring : MonoBehaviour
     private void Release()
     {
         StartCoroutine(ReleaseCourutine());
+    }
+
+    private void FaceIn()
+    {
+        anim.SetTrigger("FaceIn");
+    }
+
+    private void animVelocity(float x)
+    {
+        anim.speed = x;
     }
 
 }
