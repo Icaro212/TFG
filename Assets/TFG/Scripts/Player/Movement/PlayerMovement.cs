@@ -238,7 +238,14 @@ public class PlayerMovement : MonoBehaviour
     private void Flip()
     {
         isFacingRight = !isFacingRight;
-        transform.Rotate(0.0f, 180.0f, 0.0f);
+        if (isWallClimbingHoriActive)
+        {
+            transform.Rotate(180.0f, 0.0f, 0.0f); 
+        }
+        else
+        {
+            transform.Rotate(0.0f, 180.0f, 0.0f);
+        }
         data.wallJumpDirection = -data.wallJumpDirection;
     }
     private void CheckMomentDirectionAnimation()
