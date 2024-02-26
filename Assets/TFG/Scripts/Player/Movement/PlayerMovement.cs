@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isWalking;
 
     //Jump parameters
-    private bool isGrounded;
+    public bool isGrounded { set; get; }
     private bool isJumpCut;
     public Transform groundCheck;
 
@@ -258,7 +258,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Flip();
         }
-        isWalking = rb.velocity.x != 0;
+        isWalking = movementInputDirection != 0;
     }
     #endregion
 
