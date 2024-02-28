@@ -41848,6 +41848,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 342520857}
+    - target: {fileID: 1684380802333203225, guid: 2de4010234843634fb7aebe5edb60478, type: 3}
+      propertyPath: associatedRoom
+      value: 
+      objectReference: {fileID: 1010939907}
     - target: {fileID: 1684380802333203228, guid: 2de4010234843634fb7aebe5edb60478, type: 3}
       propertyPath: m_RootOrder
       value: 5
