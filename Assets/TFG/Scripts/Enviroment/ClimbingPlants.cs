@@ -9,7 +9,7 @@ public class ClimbingPlants : MonoBehaviour
     public int habilityCost;
     private MagicBar bar;
 
-    private static Dictionary<string, Vector2> dictDirection = new Dictionary<string, Vector2>();
+    private Dictionary<string, Vector2> dictDirection = new Dictionary<string, Vector2>();
     public List<string> listOfDirections;
     public float interval;
     public float intervalDeletion;
@@ -49,7 +49,7 @@ public class ClimbingPlants : MonoBehaviour
             Transform segment = Instantiate(segmentPrefab);
             segment.position = segmentsList[segmentsList.Count - 1].position;
             segmentsList.Add(segment);
-            yield return null;
+            //yield return null;
         }
         
         foreach(string direction in listOfDirections)
