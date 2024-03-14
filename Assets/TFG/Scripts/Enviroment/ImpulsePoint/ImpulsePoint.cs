@@ -14,6 +14,8 @@ public class ImpulsePoint : MonoBehaviour
     private MagicBar bar;
 
     public Transform selfPosition;
+    [SerializeField] private GameObject associatedRoom;
+    private Collider2D col;
     private Vector2 impulse;
     private Vector3 originalPlayerPos;
     private bool playerInArea;
@@ -30,12 +32,14 @@ public class ImpulsePoint : MonoBehaviour
         playerRB = player.GetComponent<Rigidbody2D>();
         playerScript = player.GetComponent<PlayerMovement>();
         rend = GetComponent<SpriteRenderer>();
+        col = GetComponent<Collider2D>();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if(playerInArea && bar.CheckValidityMovement(habilityCost) && Input.GetButtonDown("Fire3"))
+        col.enabled = associatedRoom.name.Equals(GameManager.instance.activeRoom);
+        if (playerInArea && bar.CheckValidityMovement(habilityCost) && Input.GetButtonDown("Fire3"))
         {
             originalPlayerPos = player.transform.position;
             StartCoroutine(Impulse());

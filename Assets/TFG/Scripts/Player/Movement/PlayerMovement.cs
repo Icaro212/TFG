@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isWalking;
 
     //Jump parameters
-    private bool isGrounded;
+    public bool isGrounded { set; get; }
     private bool isJumpCut;
     public Transform groundCheck;
 
@@ -30,8 +30,12 @@ public class PlayerMovement : MonoBehaviour
 
     //Magic parameters
     public bool isImpulsePointAct { set; get; }
-    #endregion
     public TrailRenderer trailRenderer { set; get; }
+    public bool isSpringActive { set; get; }
+    public bool isWallClimbingActive { set; get; }
+    public bool isWallClimbingHoriActive { set; get; }
+    #endregion
+
 
     // For the case that the player enters an specific room and comes back;
     private void Awake()
@@ -70,10 +74,10 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         GravityConditions();
-        if (!isImpulsePointAct)
+        CheckSurrondings();
+        if (!isImpulsePointAct && !isSpringActive)
         {
             ApplyMovement();
-            CheckSurrondings();
         }
     }
 
@@ -89,11 +93,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Jump()
     {
-        if (isGrounded || (data.LastOnGroundTime > 0))
-        {
-            rb.AddForce(Vector2.up * data.jumpForce, ForceMode2D.Impulse);
-        }
-        else if (isTouchingWall && !isGrounded)
+        if (isTouchingWall && !isGrounded)
         {
             currentWallJumpDirection = data.wallJumpDirection;
             isWallJumping = true;
@@ -101,6 +101,9 @@ public class PlayerMovement : MonoBehaviour
             force.x *= currentWallJumpDirection;
             rb.AddForce(force, ForceMode2D.Impulse);
             Flip();
+        }else if (isGrounded || (data.LastOnGroundTime > 0))
+        {
+            rb.AddForce(Vector2.up * data.jumpForce, ForceMode2D.Impulse);
         }
     }
 
@@ -108,7 +111,7 @@ public class PlayerMovement : MonoBehaviour
     {
         
         float targetSpeed = isGrounded ?  movementInputDirection * data.maxSpeed : movementInputDirection * data.maxSpeedAir;
-        if (targetSpeed.Equals(0) && !isWallJumping)
+        if (targetSpeed.Equals(0) && !isWallJumping && !isSpringActive)
         {
             Vector2 auxVector = new Vector2(0, rb.velocity.y);
             rb.velocity = auxVector;
@@ -165,6 +168,7 @@ public class PlayerMovement : MonoBehaviour
             isGrounded = true;
             isJumpCut = false;
             isWallJumping = false;
+            isSpringActive = false;
             data.LastOnGroundTime = data.coyoteTime;
         }
         else
@@ -183,7 +187,19 @@ public class PlayerMovement : MonoBehaviour
         {
             SetGravity(0);
         }
-        else if(isImpulsePointAct) //Impulse Point Active
+        else if(isImpulsePointAct) //Impulse  
+        {
+            SetGravity(0);
+        }
+        else if (isSpringActive)
+        {
+            SetGravity(data.gravityScale);
+        }
+        else if (isWallClimbingActive)
+        {
+            SetGravity(0);
+        }
+        else if (isWallClimbingHoriActive)
         {
             SetGravity(0);
         }
@@ -222,7 +238,14 @@ public class PlayerMovement : MonoBehaviour
     private void Flip()
     {
         isFacingRight = !isFacingRight;
-        transform.Rotate(0.0f, 180.0f, 0.0f);
+        if (isWallClimbingHoriActive)
+        {
+            transform.Rotate(180.0f, 0.0f, 0.0f); 
+        }
+        else
+        {
+            transform.Rotate(0.0f, 180.0f, 0.0f);
+        }
         data.wallJumpDirection = -data.wallJumpDirection;
     }
     private void CheckMomentDirectionAnimation()
@@ -235,7 +258,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Flip();
         }
-        isWalking = rb.velocity.x != 0;
+        isWalking = movementInputDirection != 0;
     }
     #endregion
 

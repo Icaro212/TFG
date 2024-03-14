@@ -20,7 +20,7 @@ MonoBehaviour:
   gravityScale: 2.75
   fallGravityMult: 2
   jumpHangGravityMul: 1.25
-  jumpForce: 13
+  jumpForce: 15
   groundCheckRadius: 0.4
   jumpHangTimeThreshold: 0.5
   maxSpeedAir: 8
@@ -30,9 +30,9 @@ MonoBehaviour:
   wallSlideSpeed: 8
   wallSlideAccel: -1
   wallJumpDirection: -1
-  wallJumpVector: {x: 10, y: 16}
+  wallJumpVector: {x: 10, y: 17}
   coyoteTime: 0.15
-  LastOnGroundTime: 0.1386197
+  LastOnGroundTime: 0.13262919
   anim: {fileID: 0}
   layerMask:
     serializedVersion: 2

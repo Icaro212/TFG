@@ -6,9 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/TFG/Scenes/MainMenu.unity
+    guid: ae0848e0d0c72e4418a7dc4728ffba98
+  - enabled: 1
     path: Assets/TFG/Scenes/Tutorial.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
     path: Assets/TFG/Scenes/Tutorial b.unity
     guid: c921a9f5110c56347a69188a66332c40
+  - enabled: 1
+    path: Assets/TFG/Scenes/Level 1.unity
+    guid: 505260b0b24d2854389680bf980c9214
   m_configObjects: {}

@@ -271,7 +271,7 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: 26.96, y: 4.327999}
-      - {x: -23.04, y: 4.2533646}
+      - {x: -23.04, y: 4.327999}
       - {x: -23.04, y: -13.15}
       - {x: 26.96, y: -13.15}
 --- !u!114 &6933803586220190208
@@ -287,6 +287,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   virtualCam: {fileID: 6933803584498020969}
+  room: {fileID: 0}
+  canvas: {fileID: 0}
 --- !u!1001 &3405289747805810746
 PrefabInstance:
   m_ObjectHideFlags: 0
