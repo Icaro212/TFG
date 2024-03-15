@@ -84,7 +84,7 @@ GameObject:
   - component: {fileID: 1952016681402625518}
   - component: {fileID: 1952016681402625516}
   - component: {fileID: 1952016681402625507}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Thwomp
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -231,6 +231,22 @@ MonoBehaviour:
   rb: {fileID: 1952016681402625518}
   force: {x: 0, y: 5}
   killingArea: {fileID: 1952016679973787062}
+  optionalObject1:
+    enabled: 0
+    value: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+  optionalObject2:
+    enabled: 0
+    value: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+  optionalObject3:
+    enabled: 0
+    value: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+  optionalObject4:
+    enabled: 0
+    value: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
 --- !u!1 &1952016681669755530
 GameObject:
   m_ObjectHideFlags: 0

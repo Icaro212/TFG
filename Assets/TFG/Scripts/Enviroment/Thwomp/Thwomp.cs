@@ -43,6 +43,7 @@ public class Thwomp : MonoBehaviour
     {
         Fall();
         FollowMovement();
+        Debug.Log(groundDistance);
     }
 
     private void FixedUpdate()
@@ -104,7 +105,7 @@ public class Thwomp : MonoBehaviour
         {
             rb.bodyType = RigidbodyType2D.Dynamic;
             rb.AddForce(-force);
-            if (killingArea.getPlayerIsInArea() && groundDistance > 1f)
+            if (killingArea.getPlayerIsInArea() && groundDistance < 1f)
             {
                 GameManager.instance.Die();
                 while (GameManager.instance.playerDying)
