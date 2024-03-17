@@ -59,7 +59,7 @@ public class Spring : MonoBehaviour
             bar.Cost(habilityCost);
             playerRB.velocity = Vector2.zero;
             playerRB.AddForce(dirrection * potency, ForceMode2D.Impulse);
-            while (Vector2.Distance(transform.position, player.transform.position) <= 7.5)
+            while (Vector2.Distance(transform.position, player.transform.position) <= 6.5)
             {
                 yield return null;
             }

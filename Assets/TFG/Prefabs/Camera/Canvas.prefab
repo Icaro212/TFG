@@ -233,7 +233,7 @@ RectTransform:
   m_GameObject: {fileID: 7186526608621440527}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.85625, y: 0.85625, z: 0.85625}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7186526607871601507}
@@ -254,7 +254,7 @@ Canvas:
   m_GameObject: {fileID: 7186526608621440527}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 2
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -288,7 +288,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &7186526608621440526
 MonoBehaviour:
   m_ObjectHideFlags: 0

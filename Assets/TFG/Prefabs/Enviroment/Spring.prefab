@@ -148,11 +148,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fad1547190304a4da093f50e5cf3608, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  potency: 20
+  potency: 23
   dirrection: {x: 0, y: 1}
   habilityCost: 7
   canvas: {fileID: 0}
   player: {fileID: 0}
+  crumblingGround:
+    enabled: 0
+    value: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
 --- !u!95 &209216883618768801
 Animator:
   serializedVersion: 5

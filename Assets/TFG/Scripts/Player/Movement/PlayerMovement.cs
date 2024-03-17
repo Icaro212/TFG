@@ -146,17 +146,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void ApplyMovement()
     {
-        if (isWallJumping || isSpringActive)
+        if (isWallJumping)
         {
             Run(0.01f);
         }
-        else if (isTouchingWall && !isGrounded && rb.velocity.y < 0 && rb.velocity.y <= data.wallSlideSpeed) //Wallslide
+        else if(isSpringActive)
         {
-            WallSlide();
+            Run(0.025f);
         }
         else
         {
             Run(1);
+        }
+
+        if(isTouchingWall && !isGrounded && rb.velocity.y < 0 && rb.velocity.y <= data.wallSlideSpeed) //Wallslide
+        {
+            WallSlide();
         }
     }
     #endregion

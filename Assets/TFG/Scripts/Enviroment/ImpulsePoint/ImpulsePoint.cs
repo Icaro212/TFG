@@ -56,7 +56,7 @@ public class ImpulsePoint : MonoBehaviour
             switch (percentaje)
             {
                 case < 0.5f:
-                    CalculateImpulse(0.35f);
+                    CalculateImpulse(0.25f);
                     break;
                 case < 0.75f:
                     CalculateImpulse(0.85f);
