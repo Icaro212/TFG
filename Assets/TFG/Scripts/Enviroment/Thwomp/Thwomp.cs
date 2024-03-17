@@ -43,7 +43,6 @@ public class Thwomp : MonoBehaviour
     {
         Fall();
         FollowMovement();
-        Debug.Log(groundDistance);
     }
 
     private void FixedUpdate()

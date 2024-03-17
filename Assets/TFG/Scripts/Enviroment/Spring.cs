@@ -17,12 +17,15 @@ public class Spring : MonoBehaviour
     private Rigidbody2D playerRB;
     private PlayerMovement playerScript;
 
+    private bool playerRemains;
+    public Optional<GameObject> crumblingGround;
+
 
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
-        anim.speed = 2.0f;
+        anim.speed = 3.0f;
         bar = canvas.GetComponent<MagicBar>();
         playerRB = player.GetComponent<Rigidbody2D>();
         playerScript = player.GetComponent<PlayerMovement>();
@@ -35,19 +38,38 @@ public class Spring : MonoBehaviour
         {
             anim.SetBool("Release", true);
             playerScript.isSpringActive = true;
+            playerRemains = true;
             playerRB.velocity = Vector2.zero;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            playerRemains = false;
+            SetSpringWaiting();
         }
     }
 
     private IEnumerator ReleaseCourutine()
     {
-        bar.Cost(habilityCost);
-        playerRB.AddForce(dirrection * potency, ForceMode2D.Impulse);
-        while (Vector2.Distance(transform.position, player.transform.position) <= 7.5)
+        if (playerRemains)
         {
-            yield return null;
+            bar.Cost(habilityCost);
+            playerRB.velocity = Vector2.zero;
+            playerRB.AddForce(dirrection * potency, ForceMode2D.Impulse);
+            while (Vector2.Distance(transform.position, player.transform.position) <= 7.5)
+            {
+                yield return null;
+            }
         }
         playerScript.isSpringActive = false;
+        if(crumblingGround.Enabled)
+        {
+            anim.SetTrigger("FaceOut");
+            crumblingGround.Value.GetComponent<Animator>().SetTrigger("Crumble");
+        }
     }
 
     private void SetSpringWaiting()

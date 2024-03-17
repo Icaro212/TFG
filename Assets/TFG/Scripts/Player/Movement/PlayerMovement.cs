@@ -75,7 +75,7 @@ public class PlayerMovement : MonoBehaviour
     {
         GravityConditions();
         CheckSurrondings();
-        if (!isImpulsePointAct && !isSpringActive)
+        if (!isImpulsePointAct)
         {
             ApplyMovement();
         }
@@ -146,15 +146,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void ApplyMovement()
     {
-        if (isWallJumping)
+        if (isWallJumping || isSpringActive)
+        {
             Run(0.01f);
-        else
-            Run(1);
-
-        if (isTouchingWall && !isGrounded && rb.velocity.y < 0 && rb.velocity.y <= data.wallSlideSpeed) //WallSliding
+        }
+        else if (isTouchingWall && !isGrounded && rb.velocity.y < 0 && rb.velocity.y <= data.wallSlideSpeed) //Wallslide
+        {
             WallSlide();
-            
-
+        }
+        else
+        {
+            Run(1);
+        }
     }
     #endregion
 
@@ -174,11 +177,13 @@ public class PlayerMovement : MonoBehaviour
         else
             isGrounded = false;
 
-        // Returns whether or not the player is touching the wall
-        isTouchingWall = Physics2D.Raycast(wallCheck.position, transform.right, data.wallCheckDistance, data.layerMask);
-        
         // Updates the Wall Jump direction 
         data.wallJumpDirection = isFacingRight ? -1 : 1;
+
+        // Returns whether or not the player is touching the wall
+        Vector2 direction = isFacingRight ? Vector2.right : Vector2.left;
+        isTouchingWall = Physics2D.Raycast(wallCheck.position, direction, data.wallCheckDistance, data.layerMask);       
+
     }
 
     private void GravityConditions()
@@ -268,7 +273,8 @@ public class PlayerMovement : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(groundCheck.position, data.groundCheckRadius);
-        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + data.wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
+        float direction = isFacingRight ? wallCheck.position.x + data.wallCheckDistance : wallCheck.position.x - data.wallCheckDistance;
+        Gizmos.DrawLine(wallCheck.position, new Vector3(direction, wallCheck.position.y, wallCheck.position.z));
     }
 
     private void TimeCounter()
