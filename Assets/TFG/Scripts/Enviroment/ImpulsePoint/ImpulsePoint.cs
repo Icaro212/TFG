@@ -46,35 +46,13 @@ public class ImpulsePoint : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private void CalculateImpulse()
     {
-        if (playerInArea)
-        {
-            float distantToCenter = Vector2.Distance(selfPosition.position, player.transform.position);
-            float totalDistance = Vector2.Distance(selfPosition.position, originalPlayerPos);
-            float percentaje = (totalDistance - distantToCenter) / distantToCenter; //Position in a line bettween the original position and the center of the GameObject given as a fraction of one
-            switch (percentaje)
-            {
-                case < 0.5f:
-                    CalculateImpulse(0.25f);
-                    break;
-                case < 0.75f:
-                    CalculateImpulse(0.85f);
-                    break;
-                default:
-                    CalculateImpulse(1);
-                    break;
-            }
-
-        }
-    }
-
-    private void CalculateImpulse(float lerp)
-    {
-        float componentXAux = selfPosition.position.x - player.transform.position.x;
-        float componentYAux = selfPosition.position.y - player.transform.position.y;
-        float componentX = Mathf.Lerp(componentXAux, -componentXAux, lerp) ;
-        float componentY = Mathf.Lerp(componentYAux, -componentYAux, lerp);
+        float distantToCenter = Vector2.Distance(selfPosition.position, player.transform.position);
+        float totalDistance = Vector2.Distance(selfPosition.position, originalPlayerPos);
+        float percentaje = 1 - (totalDistance - distantToCenter) / totalDistance;//Position in a line bettween the original position and the center of the GameObject given as a fraction of one
+        float componentX = (selfPosition.position.x - player.transform.position.x)*percentaje;
+        float componentY = (selfPosition.position.y - player.transform.position.y)*percentaje;
         impulse = new Vector2(componentX, componentY);
         
     }
@@ -87,6 +65,7 @@ public class ImpulsePoint : MonoBehaviour
         playerRB.velocity = Vector2.zero;
         while (Vector2.Distance(selfPosition.position, player.transform.position) >= 1)
         {
+            CalculateImpulse();
             playerScript.trailRenderer.emitting = true;
             playerRB.AddForce(impulse, ForceMode2D.Impulse);
             if (exitFlag) break;

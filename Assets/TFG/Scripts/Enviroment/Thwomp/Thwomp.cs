@@ -93,6 +93,7 @@ public class Thwomp : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            Debug.Log("Hi");
             isFalling = true;
             StartCoroutine(Falling());
         }
