@@ -21,6 +21,8 @@ public class ClimbingWallsHori : MonoBehaviour
     private float timerCost = 0f;
     public float costInterval = 0.25f;
 
+    private Coroutine routineRunning;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,7 +37,7 @@ public class ClimbingWallsHori : MonoBehaviour
     {
         if (hasCollide && Input.GetButtonDown("Fire3") && bar.CheckValidityMovement(habilityCostPerSecond) && !playerScript.isWallClimbingHoriActive)
         {
-            StartCoroutine(HorizontalClimb());
+            routineRunning = StartCoroutine(HorizontalClimb());
         }
     }
 
@@ -65,6 +67,10 @@ public class ClimbingWallsHori : MonoBehaviour
             {
                 bar.Cost(habilityCostPerSecond);
                 timerCost = 0f;
+            }
+            if (routineRunning != null && Input.GetButtonDown("Fire3"))
+            {
+                break;
             }
             yield return null;
         }
