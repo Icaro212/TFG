@@ -77,8 +77,10 @@ public class GameManager : MonoBehaviour
             //Según se vaya ampliando con otros tipos podemos buscar una manera de acceder al método manualmente
             foreach (GameObject obj in objects)
             {
-                Thwomp elemt = obj.gameObject.GetComponent<Thwomp>();
+                IRestartable elemt = obj.gameObject.GetComponent<IRestartable>();
                 StartCoroutine(elemt.Restart());
+
+
             }
         }
     }

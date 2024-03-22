@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Thwomp : MonoBehaviour
+public class Thwomp : MonoBehaviour, IRestartable
 {
     //Original Position Stuff
     private Vector3 startPosition;
@@ -93,7 +93,6 @@ public class Thwomp : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Hi");
             isFalling = true;
             StartCoroutine(Falling());
         }

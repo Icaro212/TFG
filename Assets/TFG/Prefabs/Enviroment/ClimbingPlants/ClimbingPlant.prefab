@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2825376715972747886}
   m_Layer: 10
   m_Name: ClimbingPlant
-  m_TagString: Ground
+  m_TagString: ObjectReload
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
