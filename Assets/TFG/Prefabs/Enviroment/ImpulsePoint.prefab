@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1684380802333203227}
   - component: {fileID: 1684380802333203226}
   - component: {fileID: 1684380802333203225}
+  - component: {fileID: 2910773383433024492}
   m_Layer: 0
   m_Name: ImpulsePoint
   m_TagString: Untagged
@@ -28,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 1684380802333203229}
   m_LocalRotation: {x: 0, y: 0, z: 0.38268343, w: 0.92387956}
   m_LocalPosition: {x: 100, y: -62, z: -0.054881368}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -75,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: -226359241, guid: de6d9852b505fbe4d97d96084fc67d64, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -118,5 +119,24 @@ MonoBehaviour:
   canvas: {fileID: 0}
   habilityCost: 5
   selfPosition: {fileID: 1684380802333203228}
-  disableColor: {r: 1, g: 1, b: 1, a: 1}
-  waitingColor: {r: 0, g: 1, b: 1, a: 1}
+  associatedRoom: {fileID: 0}
+--- !u!95 &2910773383433024492
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1684380802333203229}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6a9fa1da8a93c7e4780bb29ccbb560b0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0

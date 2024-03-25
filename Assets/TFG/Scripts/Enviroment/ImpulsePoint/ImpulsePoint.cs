@@ -21,9 +21,8 @@ public class ImpulsePoint : MonoBehaviour
     private bool playerInArea;
     private bool exitFlag = false;
 
-    public Color disableColor;
-    public Color waitingColor;
-    private SpriteRenderer rend;
+    private Animator anim;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -31,8 +30,8 @@ public class ImpulsePoint : MonoBehaviour
         bar = canvas.GetComponent<MagicBar>();
         playerRB = player.GetComponent<Rigidbody2D>();
         playerScript = player.GetComponent<PlayerMovement>();
-        rend = GetComponent<SpriteRenderer>();
         col = GetComponent<Collider2D>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -80,9 +79,9 @@ public class ImpulsePoint : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            anim.SetBool("PlayerInArea", true);
             playerInArea = true;
             exitFlag = false;
-            rend.color = waitingColor;
         }
     }
 
@@ -90,10 +89,10 @@ public class ImpulsePoint : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            anim.SetBool("PlayerInArea", false);
             playerInArea = false;
             playerScript.isImpulsePointAct = false;
             exitFlag = true;
-            rend.color = disableColor;
         }
     }
 
