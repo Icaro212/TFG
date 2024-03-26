@@ -23,6 +23,8 @@ public class ImpulsePoint : MonoBehaviour
 
     private Animator anim;
 
+    private LineRenderer lineRend;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -32,6 +34,8 @@ public class ImpulsePoint : MonoBehaviour
         playerScript = player.GetComponent<PlayerMovement>();
         col = GetComponent<Collider2D>();
         anim = GetComponent<Animator>();
+        lineRend = GetComponent<LineRenderer>();
+        lineRend.enabled = false;
     }
 
     // Update is called once per frame
@@ -42,6 +46,17 @@ public class ImpulsePoint : MonoBehaviour
         {
             originalPlayerPos = player.transform.position;
             StartCoroutine(Impulse());
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (lineRend.enabled)
+        {
+            float componentX = player.transform.position.x - selfPosition.position.x;
+            float componentY = player.transform.position.y - selfPosition.position.y;
+            Vector3 vector = new Vector3(componentX, componentY, 0f);
+            lineRend.SetPosition(1, vector*0.7f);
         }
     }
 
@@ -81,6 +96,7 @@ public class ImpulsePoint : MonoBehaviour
         {
             anim.SetBool("PlayerInArea", true);
             playerInArea = true;
+            lineRend.enabled = true;
             exitFlag = false;
         }
     }
@@ -91,6 +107,7 @@ public class ImpulsePoint : MonoBehaviour
         {
             anim.SetBool("PlayerInArea", false);
             playerInArea = false;
+            lineRend.enabled = false;
             playerScript.isImpulsePointAct = false;
             exitFlag = true;
         }
@@ -100,8 +117,10 @@ public class ImpulsePoint : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.magenta;
-        float componentX = selfPosition.position.x - player.transform.position.x;
-        float componentY = selfPosition.position.y - player.transform.position.y;
+        float componentX = player.transform.position.x - selfPosition.position.x;
+        //float componentX = selfPosition.position.x - player.transform.position.x;
+        float componentY = player.transform.position.y - selfPosition.position.y;
+        //float componentY = selfPosition.position.y - player.transform.position.y;
         Vector2 vector = new Vector2(componentX, componentY);
         Gizmos.DrawRay(selfPosition.position, vector*0.125f);
     }
