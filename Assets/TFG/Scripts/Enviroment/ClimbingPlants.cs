@@ -70,6 +70,7 @@ public class ClimbingPlants : MonoBehaviour, IRestartable
         if (coroutineMovementRunning != null)
         {
             StopCoroutine(coroutineMovementRunning);
+            coroutineMovementRunning = null;
         }
         for (int i = segmentsList.Count - 1; i > 0; i--)
         {
