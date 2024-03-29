@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+
     public void Quit()
     {
         Debug.Log("Salir....");
@@ -13,6 +14,6 @@ public class MainMenu : MonoBehaviour
 
     public void LoadScene(string name)
     {
-        SceneManager.LoadScene(name);
+        StartCoroutine(GameManager.instance.LoadingScene(name));
     }
 }

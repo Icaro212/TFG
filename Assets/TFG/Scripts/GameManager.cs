@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,32 +22,41 @@ public class GameManager : MonoBehaviour
     private Transform playerPosition;
     public bool playerDying { get; set; }
 
+    //LoadingLevel
+    private AsyncOperation asyncLoadLevel;
+
+    //GameData
+    public string LevelPlaying;
+    public Dictionary<string, int> numberOfDeathPerLevel;
+    public Dictionary<string, Dictionary<string, bool>> quartzDictPerLevel;
+    public Dictionary<string, bool> levelsCompleted;
+
 
 
     private void Awake()
     {
-        instance = this;
+        if(instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+            numberOfDeathPerLevel = new Dictionary<string, int>();
+            quartzDictPerLevel = new Dictionary<string, Dictionary<string, bool>>();
+            levelsCompleted = new Dictionary<string, bool>();
+        }
+        else
+        {
+            Destroy(this);
+        }
+        
     }
 
     private void Start()
     {
-        playerPosition = GetComponent<Transform>();
-        rb = GetComponent<Rigidbody2D>();
-        col = GetComponent<Collider2D>();
-        anim = GetComponent<Animator>();
-        script = GetComponent<PlayerMovement>();
+        StartCoroutine(GameDataCheck());
         objectsInRoom = new Dictionary<string, HashSet<GameObject>>();
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.tag.Equals("Respawn"))
-        {
-            currentCheckPoint = other.transform;
-        }
-    }
-
-    private void Respawn() //Este Método se llama desde Unity en la Animación
+    public void Respawn() //Este Método se llama desde Unity en la Animación
     {
         playerPosition.position = Vector3.zero;
         playerPosition.position = currentCheckPoint.position;
@@ -64,6 +74,7 @@ public class GameManager : MonoBehaviour
         anim.SetTrigger("death");
         script.enabled = !script.enabled;
         rb.bodyType = RigidbodyType2D.Static;
+        numberOfDeathPerLevel[LevelPlaying] += 1;
         playerDying = true;
         col.isTrigger = true;
     }
@@ -74,14 +85,76 @@ public class GameManager : MonoBehaviour
         if (objectsInRoom.ContainsKey(room))
         {
             HashSet<GameObject> objects = objectsInRoom[room];
-            //Según se vaya ampliando con otros tipos podemos buscar una manera de acceder al método manualmente
             foreach (GameObject obj in objects)
             {
                 IRestartable elemt = obj.gameObject.GetComponent<IRestartable>();
                 StartCoroutine(elemt.Restart());
-
-
             }
         }
+    }
+
+    public IEnumerator LoadingScene(string name)
+    {
+        GameManager.instance.LevelPlaying = name;
+        asyncLoadLevel = SceneManager.LoadSceneAsync(name);
+        yield return asyncLoadLevel;
+    }
+
+
+
+    private IEnumerator GameDataCheck()
+    {
+        List<string> levels = new List<string>();
+        levels.Add("Tutorial");
+        levels.Add("Level 1");
+
+        if (PlayerPrefs.GetInt("FirstTimePlaying", 1) == 1)
+        {
+            PlayerPrefs.SetInt("FirstTimePlaying", 0);
+            for (int i = 0; i < levels.Count; i++)
+            {
+                string nameLevel = levels[i];
+                numberOfDeathPerLevel.Add(nameLevel, 0);
+                levelsCompleted.Add(nameLevel, false);
+
+                Dictionary<string, bool> quartzDict = new Dictionary<string, bool>();
+                AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync(nameLevel, LoadSceneMode.Additive);
+                yield return asyncLoadLevel;
+                Quartz[] quartzInScene = Object.FindObjectsOfType<Quartz>();
+
+                for (int j = 0; j < quartzInScene.Length; j++)
+                {
+                    quartzDict.Add(quartzInScene[j].gameObject.name, false);
+                }
+
+                AsyncOperation asyncUnloadLevel = SceneManager.UnloadSceneAsync(nameLevel);
+                yield return asyncUnloadLevel;
+                quartzDictPerLevel.Add(nameLevel, quartzDict);
+            }
+            SaveSystem.SaveGame();
+            objectsInRoom.Clear();
+        }
+        else
+        {
+            GameData data = SaveSystem.LoadGame();
+            for (int i = 0; i < levels.Count; i++)
+            {
+                string nameLevel = levels[i];
+                numberOfDeathPerLevel.Add(nameLevel, data.numberOfDeathPerLevel[nameLevel]);
+                levelsCompleted.Add(nameLevel, data.levelsCompleted[nameLevel]);
+                quartzDictPerLevel.Add(nameLevel, data.quartzDictPerLevel[nameLevel]);
+            }
+
+        }       
+    }
+
+    public void SearchForPlayer()
+    {
+        GameObject playerInScene = Object.FindObjectOfType<PlayerMovement>().gameObject;
+        playerPosition = playerInScene.GetComponent<Transform>();
+        rb = playerInScene.GetComponent<Rigidbody2D>();
+        col = playerInScene.GetComponent<Collider2D>();
+        anim = playerInScene.GetComponent<Animator>();
+        script = playerInScene.GetComponent<PlayerMovement>();
     }
 }

@@ -36,22 +36,9 @@ public class PlayerMovement : MonoBehaviour
     public bool isWallClimbingHoriActive { set; get; }
     #endregion
 
-
-    // For the case that the player enters an specific room and comes back;
     private void Awake()
     {
-        GameObject[] Doors = GameObject.FindGameObjectsWithTag("Door");
-        foreach (GameObject Door in Doors)
-        {
-            SceneTransaction DoorScript = Door.GetComponent<SceneTransaction>();
-            if (DoorScript.playerHasEnter && DoorScript.sceneOrigin == SceneManager.GetActiveScene().name)
-            {
-                playerTransform.position = DoorScript.playerPosition;
-                Destroy(Door);
-            }
-
-        }
-
+        GameManager.instance.SearchForPlayer();
     }
 
     // Start is called before the first frame update
@@ -81,6 +68,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    //** Controls **
     #region Controls
     private void CheckInputs()
     {
@@ -167,6 +155,7 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     //** Checks **
+    #region Checks
     private void CheckSurrondings()
     {
         // Returns whether or not the player is grouned or it´s touching the wall
@@ -238,6 +227,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb.gravityScale = gravityScale;
     }
+    #endregion
 
     //** Animation Relate Stuff **
     #region Animation Stuff
@@ -269,6 +259,11 @@ public class PlayerMovement : MonoBehaviour
             Flip();
         }
         isWalking = movementInputDirection != 0;
+    }
+
+    private void Respawn()
+    {
+        GameManager.instance.Respawn();
     }
     #endregion
 

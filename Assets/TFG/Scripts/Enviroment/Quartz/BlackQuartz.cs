@@ -21,6 +21,10 @@ public class BlackQuartz : MonoBehaviour
 
     private void LoadMenu()
     {
+        GameManager.instance.objectsInRoom.Clear();
+        string currentLevel = GameManager.instance.LevelPlaying;
+        GameManager.instance.levelsCompleted[currentLevel] = true;
+        SaveSystem.SaveGame();
         SceneManager.LoadScene("MainMenu");
     }
 }
