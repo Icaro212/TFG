@@ -32,6 +32,6 @@ public class Quartz : MonoBehaviour
 
     private void DestroyObject()
     {
-        Destroy(gameObject.transform.parent.gameObject);
+        Destroy(gameObject);
     }
 }
