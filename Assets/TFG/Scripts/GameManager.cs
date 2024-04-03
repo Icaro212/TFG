@@ -31,7 +31,8 @@ public class GameManager : MonoBehaviour
     public Dictionary<string, Dictionary<string, bool>> quartzDictPerLevel;
     public Dictionary<string, bool> levelsCompleted;
 
-
+    //LevelInfoCards
+    public List<LevelInfo> infoCardsLevels;
 
     private void Awake()
     {
@@ -47,12 +48,11 @@ public class GameManager : MonoBehaviour
         {
             Destroy(this);
         }
-        
+        StartCoroutine(GameDataCheck());
     }
 
     private void Start()
     {
-        StartCoroutine(GameDataCheck());
         objectsInRoom = new Dictionary<string, HashSet<GameObject>>();
     }
 
@@ -99,8 +99,6 @@ public class GameManager : MonoBehaviour
         asyncLoadLevel = SceneManager.LoadSceneAsync(name);
         yield return asyncLoadLevel;
     }
-
-
 
     private IEnumerator GameDataCheck()
     {

@@ -16,4 +16,9 @@ public class MainMenu : MonoBehaviour
     {
         StartCoroutine(GameManager.instance.LoadingScene(name));
     }
+
+    public void OpenUrl(string url)
+    {
+        Application.OpenURL(url);
+    }
 }

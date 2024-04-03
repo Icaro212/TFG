@@ -26,5 +26,9 @@ public class BlackQuartz : MonoBehaviour
         GameManager.instance.levelsCompleted[currentLevel] = true;
         SaveSystem.SaveGame();
         SceneManager.LoadScene("MainMenu");
+        foreach(LevelInfo card in GameManager.instance.infoCardsLevels)
+        {
+            card.UpdateScore();
+        }
     }
 }
