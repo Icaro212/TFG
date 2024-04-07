@@ -13,7 +13,9 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private float movementInputDirection;
     private bool isFacingRight = true;
-    private bool isWalking;
+
+    //Animation
+    private enum MovementState { iddle, running, jumping, falling, wallsliding, holding, climbing }
 
     //Jump parameters
     public bool isGrounded { set; get; }
@@ -233,7 +235,40 @@ public class PlayerMovement : MonoBehaviour
     #region Animation Stuff
     private void UpdateAnimations()
     {
-        data.anim.SetBool("isWalking", isWalking);
+        MovementState state;
+        if(movementInputDirection != 0)
+        {
+            state = MovementState.running;
+        }
+        else
+        {
+            state = MovementState.iddle;
+        }
+
+        if(rb.velocity.y > .1f)
+        {
+            state = MovementState.jumping;
+        }
+        else if(rb.velocity.y < -.1f)
+        {
+            state = MovementState.falling;
+        }
+
+        if(isTouchingWall && rb.velocity.y < -.1f)
+        {
+            state = MovementState.wallsliding;
+        }
+
+        if((isWallClimbingActive || isWallClimbingHoriActive) && rb.velocity.y != 0)
+        {
+            state = MovementState.climbing;
+        }
+        else if(isWallClimbingActive || isWallClimbingHoriActive)
+        {
+            state = MovementState.holding;
+        }
+
+        data.anim.SetInteger("state", (int) state);
     }
     private void Flip()
     {
@@ -258,7 +293,6 @@ public class PlayerMovement : MonoBehaviour
         {
             Flip();
         }
-        isWalking = movementInputDirection != 0;
     }
 
     private void Respawn()
