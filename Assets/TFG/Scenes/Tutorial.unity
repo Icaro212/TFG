@@ -21952,7 +21952,7 @@ PrefabInstance:
       objectReference: {fileID: 1952016681402625512, guid: a35acf28f0960284ab14b0fa414a6e48, type: 3}
     - target: {fileID: 1952016681402625507, guid: a35acf28f0960284ab14b0fa414a6e48, type: 3}
       propertyPath: force.y
-      value: 12.5
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1952016681402625512, guid: a35acf28f0960284ab14b0fa414a6e48, type: 3}
       propertyPath: m_Name
