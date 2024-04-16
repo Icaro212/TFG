@@ -32,7 +32,7 @@ public class LevelInfo : MonoBehaviour
         Dictionary<string, bool>.ValueCollection values = GameManager.instance.quartzDictPerLevel[levelNameAux].Values;
         float totalValues = values.Count;
         float counter = 0;
-        foreach(bool val in values)
+        foreach (bool val in values)
         {
             if (val)
                 counter++;

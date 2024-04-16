@@ -20,6 +20,7 @@ public class ClimbingPlants : MonoBehaviour, IRestartable
     private Vector3 origPosition;
     private Coroutine coroutineMovementRunning;
     private Coroutine coroutineRestartRunning;
+    public bool restartHappening = false;
 
     // Start is called before the first frame update
     void Start()
@@ -72,15 +73,22 @@ public class ClimbingPlants : MonoBehaviour, IRestartable
             StopCoroutine(coroutineMovementRunning);
             coroutineMovementRunning = null;
         }
-        for (int i = segmentsList.Count - 1; i > 0; i--)
+        if (!restartHappening)
         {
-            Transform aux = segmentsList[i];
-            segmentsList.RemoveAt(i);
-            Destroy(aux.gameObject);
-            yield return new WaitForSeconds(intervalDeletion);
+            restartHappening = true;
+            for (int i = segmentsList.Count - 1; i > 0; i--)
+            {
+                int index = segmentsList.Count - 1;
+                Transform aux = segmentsList[index];
+                segmentsList.RemoveAt(index);
+                Destroy(aux.gameObject);
+                yield return new WaitForSeconds(intervalDeletion);
+            }
+            transform.position = origPosition;
+            coroutineRestartRunning = null;
+            restartHappening = false;
         }
-        transform.position = origPosition;
-        coroutineRestartRunning = null;
+
 
     }
 }

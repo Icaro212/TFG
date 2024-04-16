@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Threading;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour
     //Restart objects when Dying
     public string activeRoom { set; get; }
     public Dictionary<string, HashSet<GameObject>> objectsInRoom { set; get; }
+    private bool restartNotRunning;
 
     //Player Death
     private Rigidbody2D rb;
@@ -141,6 +143,7 @@ public class GameManager : MonoBehaviour
                 numberOfDeathPerLevel.Add(nameLevel, data.numberOfDeathPerLevel[nameLevel]);
                 levelsCompleted.Add(nameLevel, data.levelsCompleted[nameLevel]);
                 quartzDictPerLevel.Add(nameLevel, data.quartzDictPerLevel[nameLevel]);
+
             }
 
         }       

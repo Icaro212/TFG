@@ -32,7 +32,7 @@ public class Key : MonoBehaviour
         if (collision.gameObject.CompareTag("Player") && !isInList)
         {
             listContainingSelf = collision.GetComponentInChildren<FollowList>();
-            objective =listContainingSelf.AddFollower();
+            objective = listContainingSelf.AddFollower();
             isInList = true;
         }
     }
@@ -40,7 +40,8 @@ public class Key : MonoBehaviour
     public void DestroyKey()
     {
         anim.SetTrigger("hasBeenUsed");
-        listContainingSelf.RemoveTarget(gameObject);
+        listContainingSelf.RemoveTarget(objective);
+        listContainingSelf.UpdateTargetsPosition();
     }
 
     public void DestroyObject()

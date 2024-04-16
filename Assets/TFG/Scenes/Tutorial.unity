@@ -21425,17 +21425,21 @@ PrefabInstance:
       propertyPath: associatedRoom
       value: 
       objectReference: {fileID: 677820569}
+    - target: {fileID: 1684380802333203226, guid: 2de4010234843634fb7aebe5edb60478, type: 3}
+      propertyPath: m_Radius
+      value: 4.25
+      objectReference: {fileID: 0}
     - target: {fileID: 1684380802333203228, guid: 2de4010234843634fb7aebe5edb60478, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1684380802333203228, guid: 2de4010234843634fb7aebe5edb60478, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.18
+      value: 1.33
       objectReference: {fileID: 0}
     - target: {fileID: 1684380802333203228, guid: 2de4010234843634fb7aebe5edb60478, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.24
+      value: 1.09
       objectReference: {fileID: 0}
     - target: {fileID: 1684380802333203228, guid: 2de4010234843634fb7aebe5edb60478, type: 3}
       propertyPath: m_LocalPosition.z
