@@ -23,6 +23,8 @@ public class ClimbingWallsHori : MonoBehaviour
 
     private Coroutine routineRunning;
 
+    [SerializeField] private AudioClip climbClip;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -61,6 +63,8 @@ public class ClimbingWallsHori : MonoBehaviour
         {
             float x = Input.GetAxis("Horizontal");
             float speedModifier = x > 0 ? .5f : 1;
+            if(x!=0)
+                SoundFXManager.instance.PlaySoundFXClip(climbClip, transform, 1f);
             playerRB.velocity = new Vector2(x * (13 * speedModifier), playerRB.velocity.y);
             timerCost += Time.deltaTime;
             if (timerCost >= costInterval)

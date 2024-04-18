@@ -22,6 +22,9 @@ public class ClimbingPlants : MonoBehaviour, IRestartable
     private Coroutine coroutineRestartRunning;
     public bool restartHappening = false;
 
+
+    [SerializeField] private AudioClip bushClip;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,6 +57,7 @@ public class ClimbingPlants : MonoBehaviour, IRestartable
         foreach(string direction in listOfDirections)
         {
             yield return new WaitForSeconds(interval);
+            SoundFXManager.instance.PlaySoundFXClip(bushClip, transform, 1f);
             for (int i = segmentsList.Count - 1; i > 0; i--)
             {
                 segmentsList[i].position = segmentsList[i - 1].position;

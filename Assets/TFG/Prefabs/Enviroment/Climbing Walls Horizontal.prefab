@@ -1200,6 +1200,7 @@ MonoBehaviour:
   areasOfCollision:
   - {fileID: 200648341036624644}
   costInterval: 0.25
+  climbClip: {fileID: 8300000, guid: ab4971604b839664dabbb66e9e85a4f7, type: 3}
 --- !u!1 &200648341025770787
 GameObject:
   m_ObjectHideFlags: 0

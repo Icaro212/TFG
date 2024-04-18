@@ -22,6 +22,7 @@ public class ImpulsePoint : MonoBehaviour
     private bool exitFlag = false;
 
     private Animator anim;
+    [SerializeField] private AudioClip dashClip;
 
     private LineRenderer lineRend;
 
@@ -85,6 +86,7 @@ public class ImpulsePoint : MonoBehaviour
             if (exitFlag) break;
             yield return null;
         }
+        SoundFXManager.instance.PlaySoundFXClip(dashClip, transform, 1f);
         playerRB.velocity = Vector2.zero;
         playerScript.isImpulsePointAct = false;
         playerScript.trailRenderer.emitting = false;

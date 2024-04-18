@@ -247,6 +247,7 @@ MonoBehaviour:
     enabled: 0
     value: {fileID: 0}
     position: {x: 0, y: 0, z: 0}
+  collisionClip: {fileID: 8300000, guid: babdb5fb8cc593c4896b3eac9833569d, type: 3}
 --- !u!1 &1952016681669755530
 GameObject:
   m_ObjectHideFlags: 0

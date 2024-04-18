@@ -297,6 +297,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 2950988abeb179243ab8eb7cb95b5193, type: 2}
   playerTransform: {fileID: 8845947808889196354}
+  jumpClip: {fileID: 8300000, guid: 69bd74f5963fc904ca64823e1bd62a7a, type: 3}
+  walkClips:
+  - {fileID: 8300000, guid: 804ccb3f0e24f0948a407f4ba72fb426, type: 3}
+  - {fileID: 8300000, guid: 8dd8d9b0b87969444bb8f27995610c7b, type: 3}
+  - {fileID: 8300000, guid: 3971fe7a383d93043a6471c209e7efcb, type: 3}
   groundCheck: {fileID: 8845947809079627777}
   wallCheck: {fileID: 8845947810214032771}
 --- !u!95 &8845947808889196414

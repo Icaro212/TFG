@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2426134672832062320}
   - component: {fileID: 2426134672832062323}
+  - component: {fileID: 7418164356293495000}
+  - component: {fileID: 1948101175037790235}
   m_Layer: 0
   m_Name: GameMangerObject
   m_TagString: Untagged
@@ -45,4 +47,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentCheckPoint: {fileID: 0}
+  deathClip: {fileID: 8300000, guid: 2bbf32c92796dbe40a455a84a0bd6ccc, type: 3}
+  respawnClip: {fileID: 8300000, guid: 7770fb44aa9860f458d755ae2a23fa2d, type: 3}
   LevelPlaying: 
+  infoCardsLevels: []
+--- !u!114 &7418164356293495000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2426134672832062322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66a029bbf43518942aef25e4121b5d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundFXObject: {fileID: 5555401061250418386, guid: 46926b4ae8443364e918300d20ce3f4a, type: 3}
+--- !u!114 &1948101175037790235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2426134672832062322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4c76dd0d7e01764cb7e6f4cbe84dc15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 24100000, guid: e4ce052696809524d8a17d1f7e893578, type: 2}

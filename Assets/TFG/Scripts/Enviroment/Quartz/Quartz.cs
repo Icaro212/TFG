@@ -6,6 +6,7 @@ public class Quartz : MonoBehaviour
 {
     private Animator anim;
     private SpriteRenderer rend;
+    [SerializeField] private AudioClip quartzCollectedClip;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +26,7 @@ public class Quartz : MonoBehaviour
         if(collision.gameObject.CompareTag("Player"))
         {
             anim.SetTrigger("ObjectCollected");
+            SoundFXManager.instance.PlaySoundFXClip(quartzCollectedClip, transform, 1f);
             string levelPlaying = GameManager.instance.LevelPlaying;
             GameManager.instance.quartzDictPerLevel[levelPlaying][gameObject.name] = true;
         }

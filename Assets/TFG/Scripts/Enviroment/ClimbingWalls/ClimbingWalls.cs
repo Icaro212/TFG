@@ -19,6 +19,7 @@ public class ClimbingWalls : MonoBehaviour
 
     private Coroutine routineRunning;
 
+    [SerializeField] private AudioClip climbClip;
     // Start is called before the first frame update
     void Start()
     {
@@ -64,6 +65,8 @@ public class ClimbingWalls : MonoBehaviour
             if (timerCost >= costInterval)
             {
                 bar.Cost(habilityCostPerSecond);
+                if (y != 0)
+                    SoundFXManager.instance.PlaySoundFXClip(climbClip, transform, 1f);
                 timerCost = 0f;
             }
             if (routineRunning != null && Input.GetButtonDown("Fire3"))

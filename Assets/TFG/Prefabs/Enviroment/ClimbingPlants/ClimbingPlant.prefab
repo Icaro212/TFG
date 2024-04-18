@@ -137,3 +137,5 @@ MonoBehaviour:
   interval: 0.4
   intervalDeletion: 0.5
   segmentPrefab: {fileID: 6543178961219109314, guid: f9bd86c9f4c1af149ac8bb0fd1cd3dbd, type: 3}
+  restartHappening: 0
+  bushClip: {fileID: 8300000, guid: 1cceb881384fe2c4a9c78f1556ef0609, type: 3}

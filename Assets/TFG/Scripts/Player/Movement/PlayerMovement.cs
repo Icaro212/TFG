@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Threading;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -16,6 +17,10 @@ public class PlayerMovement : MonoBehaviour
 
     //Animation
     private enum MovementState { iddle, running, jumping, falling, wallsliding, holding, climbing }
+    [SerializeField] private AudioClip jumpClip;
+    [SerializeField] private AudioClip[] walkClips;
+    private float timerSound = 0.0f;
+    private float clipPlayingDuration;
 
     //Jump parameters
     public bool isGrounded { set; get; }
@@ -90,10 +95,13 @@ public class PlayerMovement : MonoBehaviour
             Vector2 force = new Vector2(data.wallJumpVector.x, data.wallJumpVector.y);
             force.x *= currentWallJumpDirection;
             rb.AddForce(force, ForceMode2D.Impulse);
+            SoundFXManager.instance.PlaySoundFXClip(jumpClip, transform, 1f);
             Flip();
-        }else if (isGrounded || (data.LastOnGroundTime > 0))
+        }
+        else if (isGrounded || (data.LastOnGroundTime > 0))
         {
             rb.AddForce(Vector2.up * data.jumpForce, ForceMode2D.Impulse);
+            SoundFXManager.instance.PlaySoundFXClip(jumpClip, transform, 1f);
         }
     }
 
@@ -122,6 +130,15 @@ public class PlayerMovement : MonoBehaviour
             float speedDif = targetSpeed - rb.velocity.x;
             float movement = speedDif * accelVal;
             rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
+        }
+
+        if(interpolVal == 1 && targetSpeed != 0 && timerSound > clipPlayingDuration && isGrounded)
+        {
+            int rand = Random.Range(0, walkClips.Length);
+            AudioClip clipAux = walkClips[rand];
+            clipPlayingDuration = clipAux.length;
+            SoundFXManager.instance.PlaySoundFXClip(clipAux, transform, 1f);
+            timerSound = 0.0f;
         }
 
     }
@@ -267,7 +284,6 @@ public class PlayerMovement : MonoBehaviour
         {
             state = MovementState.holding;
         }
-
         data.anim.SetInteger("state", (int) state);
     }
     private void Flip()
@@ -299,6 +315,11 @@ public class PlayerMovement : MonoBehaviour
     {
         GameManager.instance.Respawn();
     }
+
+    private void PlayWalkSound()
+    {
+
+    }
     #endregion
 
 
@@ -313,7 +334,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void TimeCounter()
     {
-        data.LastOnGroundTime -= Time.deltaTime;       
+        data.LastOnGroundTime -= Time.deltaTime;
+        timerSound += Time.deltaTime;
     }
     #endregion
 }

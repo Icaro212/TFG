@@ -7,6 +7,7 @@ public class BlackQuartz : MonoBehaviour
 {
 
     private Animator anim;
+    [SerializeField] private AudioClip quartzCollectedClip;
 
 
     private void Start()
@@ -17,6 +18,7 @@ public class BlackQuartz : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         anim.SetTrigger("LevelCompleted");
+        SoundFXManager.instance.PlaySoundFXClip(quartzCollectedClip, transform, 1f);
     }
 
     private void LoadMenu()

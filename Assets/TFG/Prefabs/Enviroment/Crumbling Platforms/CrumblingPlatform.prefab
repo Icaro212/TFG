@@ -127,6 +127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   platformCollider: {fileID: 4039304017781893552}
   playingAnim: 0
+  crumbleClip: {fileID: 8300000, guid: 1cceb881384fe2c4a9c78f1556ef0609, type: 3}
   optionalsObjects: []
 --- !u!95 &4039304017781893517
 Animator:

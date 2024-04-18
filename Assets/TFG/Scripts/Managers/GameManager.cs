@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     public Transform currentCheckPoint;
     private Transform playerPosition;
     public bool playerDying { get; set; }
+    [SerializeField] private AudioClip deathClip;
+    [SerializeField] private AudioClip respawnClip;
 
     //LoadingLevel
     private AsyncOperation asyncLoadLevel;
@@ -58,7 +60,7 @@ public class GameManager : MonoBehaviour
         objectsInRoom = new Dictionary<string, HashSet<GameObject>>();
     }
 
-    public void Respawn() //Este Método se llama desde Unity en la Animación
+    public void Respawn() //Este Método se llama desde Unity en la Animacióngi
     {
         playerPosition.position = Vector3.zero;
         playerPosition.position = currentCheckPoint.position;
@@ -66,6 +68,7 @@ public class GameManager : MonoBehaviour
         script.enabled = true;
         rb.gravityScale = 2.5f;
         anim.SetTrigger("respawn");
+        SoundFXManager.instance.PlaySoundFXClip(respawnClip, transform, 1f);
         col.isTrigger = false;
         rb.bodyType = RigidbodyType2D.Dynamic;
         StartCoroutine(RestartingRoom(activeRoom));
@@ -79,6 +82,7 @@ public class GameManager : MonoBehaviour
         numberOfDeathPerLevel[LevelPlaying] += 1;
         playerDying = true;
         col.isTrigger = true;
+        SoundFXManager.instance.PlaySoundFXClip(deathClip, transform, 1f);
     }
 
     public IEnumerator RestartingRoom(string room)

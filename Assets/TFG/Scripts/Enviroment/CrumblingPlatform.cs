@@ -7,7 +7,9 @@ public class CrumblingPlatform : MonoBehaviour
 
     public Collider2D platformCollider;
     public bool playingAnim = false;
+    
     private Animator anim;
+    [SerializeField] private AudioClip crumbleClip;
 
     //Attach Objects
     public List<Optional<GameObject>> optionalsObjects;
@@ -35,6 +37,7 @@ public class CrumblingPlatform : MonoBehaviour
     public void Crumble()
     {
         anim.SetTrigger("Crumble");
+        SoundFXManager.instance.PlaySoundFXClip(crumbleClip, transform, 1f);
         foreach (Optional<GameObject> optional in optionalsObjects)
         {
             if (optional.Enabled)

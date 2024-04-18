@@ -33,6 +33,9 @@ public class Thwomp : MonoBehaviour, IRestartable
     [SerializeField] private Optional<GameObject> optionalObject3;
     [SerializeField] private Optional<GameObject> optionalObject4;
 
+    //Audio
+    [SerializeField] private AudioClip collisionClip;
+
 
     private void Start()
     {
@@ -115,6 +118,7 @@ public class Thwomp : MonoBehaviour, IRestartable
             }
             yield return null;
         }
+        SoundFXManager.instance.PlaySoundFXClip(collisionClip, transform, 1f);
     }
 
     public IEnumerator Restart()

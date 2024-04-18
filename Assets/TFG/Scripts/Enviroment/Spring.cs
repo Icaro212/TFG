@@ -12,6 +12,7 @@ public class Spring : MonoBehaviour
     private MagicBar bar;
 
     private Animator anim;
+    [SerializeField] private AudioClip springClip;
     
     [SerializeField] private GameObject player;
     private Rigidbody2D playerRB;
@@ -58,6 +59,7 @@ public class Spring : MonoBehaviour
         {
             bar.Cost(habilityCost);
             playerRB.velocity = Vector2.zero;
+            SoundFXManager.instance.PlaySoundFXClip(springClip, transform, 1f);
             playerRB.AddForce(dirrection * potency, ForceMode2D.Impulse);
             while (Vector2.Distance(transform.position, player.transform.position) <= 6.5)
             {

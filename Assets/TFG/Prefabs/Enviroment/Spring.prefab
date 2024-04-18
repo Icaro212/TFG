@@ -152,6 +152,7 @@ MonoBehaviour:
   dirrection: {x: 0, y: 1}
   habilityCost: 7
   canvas: {fileID: 0}
+  springClip: {fileID: 8300000, guid: b03b7e681512bd84cabccf6f1ea7e48f, type: 3}
   player: {fileID: 0}
   crumblingGround:
     enabled: 0
