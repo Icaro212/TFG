@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2825376715972747886}
   m_Layer: 10
   m_Name: ClimbingPlant
-  m_TagString: Ground
+  m_TagString: ObjectReload
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 91365cf397cdd2a4fbe4bf9583ef2c26, type: 3}
   m_Color: {r: 0.039215688, g: 0.7176471, b: 0.05490196, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -137,3 +137,5 @@ MonoBehaviour:
   interval: 0.4
   intervalDeletion: 0.5
   segmentPrefab: {fileID: 6543178961219109314, guid: f9bd86c9f4c1af149ac8bb0fd1cd3dbd, type: 3}
+  restartHappening: 0
+  bushClip: {fileID: 8300000, guid: 1cceb881384fe2c4a9c78f1556ef0609, type: 3}

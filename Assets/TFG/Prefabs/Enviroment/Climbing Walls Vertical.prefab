@@ -1911,3 +1911,4 @@ MonoBehaviour:
   canvas: {fileID: 0}
   player: {fileID: 0}
   costInterval: 0.25
+  climbClip: {fileID: 8300000, guid: ab4971604b839664dabbb66e9e85a4f7, type: 3}

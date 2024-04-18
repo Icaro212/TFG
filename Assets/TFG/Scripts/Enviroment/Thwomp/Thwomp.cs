@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Thwomp : MonoBehaviour
+public class Thwomp : MonoBehaviour, IRestartable
 {
     //Original Position Stuff
     private Vector3 startPosition;
@@ -32,6 +32,9 @@ public class Thwomp : MonoBehaviour
     [SerializeField] private Optional<GameObject> optionalObject2;
     [SerializeField] private Optional<GameObject> optionalObject3;
     [SerializeField] private Optional<GameObject> optionalObject4;
+
+    //Audio
+    [SerializeField] private AudioClip collisionClip;
 
 
     private void Start()
@@ -104,7 +107,7 @@ public class Thwomp : MonoBehaviour
         {
             rb.bodyType = RigidbodyType2D.Dynamic;
             rb.AddForce(-force);
-            if (killingArea.getPlayerIsInArea() && groundDistance > 1f)
+            if (killingArea.getPlayerIsInArea() && groundDistance < 1f)
             {
                 GameManager.instance.Die();
                 while (GameManager.instance.playerDying)
@@ -115,6 +118,7 @@ public class Thwomp : MonoBehaviour
             }
             yield return null;
         }
+        SoundFXManager.instance.PlaySoundFXClip(collisionClip, transform, 1f);
     }
 
     public IEnumerator Restart()

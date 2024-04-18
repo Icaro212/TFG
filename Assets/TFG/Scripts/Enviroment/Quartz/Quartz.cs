@@ -4,14 +4,20 @@ using UnityEngine;
 
 public class Quartz : MonoBehaviour
 {
-
-    public GameObject objective;
     private Animator anim;
+    private SpriteRenderer rend;
+    [SerializeField] private AudioClip quartzCollectedClip;
 
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
+        rend = GetComponent<SpriteRenderer>();
+        string levelPlaying = GameManager.instance.LevelPlaying;
+        if (GameManager.instance.quartzDictPerLevel.ContainsKey(levelPlaying) && GameManager.instance.quartzDictPerLevel[levelPlaying][gameObject.name])
+        {
+            rend.color = new Color(0.4549f, 0.4549f, 0.4549f);
+        }
     }
 
     // Update is called once per frame
@@ -20,11 +26,14 @@ public class Quartz : MonoBehaviour
         if(collision.gameObject.CompareTag("Player"))
         {
             anim.SetTrigger("ObjectCollected");
+            SoundFXManager.instance.PlaySoundFXClip(quartzCollectedClip, transform, 1f);
+            string levelPlaying = GameManager.instance.LevelPlaying;
+            GameManager.instance.quartzDictPerLevel[levelPlaying][gameObject.name] = true;
         }
     }
 
     private void DestroyObject()
     {
-        Destroy(gameObject.transform.parent.gameObject);
+        Destroy(gameObject);
     }
 }

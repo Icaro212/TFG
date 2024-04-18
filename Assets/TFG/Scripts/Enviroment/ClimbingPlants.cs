@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClimbingPlants : MonoBehaviour
+public class ClimbingPlants : MonoBehaviour, IRestartable
 {
 
     public GameObject canvas;
@@ -18,7 +18,12 @@ public class ClimbingPlants : MonoBehaviour
     private List<Transform> segmentsList = new List<Transform>();
 
     private Vector3 origPosition;
-    private bool coroutineRunning = false;
+    private Coroutine coroutineMovementRunning;
+    private Coroutine coroutineRestartRunning;
+    public bool restartHappening = false;
+
+
+    [SerializeField] private AudioClip bushClip;
 
     // Start is called before the first frame update
     void Start()
@@ -34,10 +39,9 @@ public class ClimbingPlants : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Player") && bar.CheckValidityMovement(habilityCost) && !coroutineRunning)
+        if(collision.gameObject.CompareTag("Player") && bar.CheckValidityMovement(habilityCost) && coroutineMovementRunning == null && coroutineRestartRunning == null)
         {
-            coroutineRunning = true;
-            StartCoroutine(ClimbingPlant());
+            coroutineMovementRunning = StartCoroutine(ClimbingPlant());
         }
     }
 
@@ -49,12 +53,11 @@ public class ClimbingPlants : MonoBehaviour
             Transform segment = Instantiate(segmentPrefab);
             segment.position = segmentsList[segmentsList.Count - 1].position;
             segmentsList.Add(segment);
-            //yield return null;
         }
-        
         foreach(string direction in listOfDirections)
         {
             yield return new WaitForSeconds(interval);
+            SoundFXManager.instance.PlaySoundFXClip(bushClip, transform, 1f);
             for (int i = segmentsList.Count - 1; i > 0; i--)
             {
                 segmentsList[i].position = segmentsList[i - 1].position;
@@ -63,16 +66,33 @@ public class ClimbingPlants : MonoBehaviour
             Vector3 curentPosition = this.transform.position;
             this.transform.position = new Vector3(curentPosition.x + aux.x, curentPosition.y + aux.y, 0f);
         }
+        coroutineMovementRunning = null;
+        coroutineRestartRunning = StartCoroutine(Restart());
+    }
 
-        for(int i = segmentsList.Count - 1; i > 0; i--)
+    public IEnumerator Restart()
+    {
+        if (coroutineMovementRunning != null)
         {
-            Transform aux = segmentsList[i];
-            segmentsList.RemoveAt(i);
-            Destroy(aux.gameObject);
-            yield return new WaitForSeconds(intervalDeletion);
+            StopCoroutine(coroutineMovementRunning);
+            coroutineMovementRunning = null;
+        }
+        if (!restartHappening)
+        {
+            restartHappening = true;
+            for (int i = segmentsList.Count - 1; i > 0; i--)
+            {
+                int index = segmentsList.Count - 1;
+                Transform aux = segmentsList[index];
+                segmentsList.RemoveAt(index);
+                Destroy(aux.gameObject);
+                yield return new WaitForSeconds(intervalDeletion);
+            }
+            transform.position = origPosition;
+            coroutineRestartRunning = null;
+            restartHappening = false;
         }
 
-        transform.position = origPosition;
-        coroutineRunning = false;
+
     }
 }

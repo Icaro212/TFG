@@ -21,9 +21,11 @@ public class ImpulsePoint : MonoBehaviour
     private bool playerInArea;
     private bool exitFlag = false;
 
-    public Color disableColor;
-    public Color waitingColor;
-    private SpriteRenderer rend;
+    private Animator anim;
+    [SerializeField] private AudioClip dashClip;
+
+    private LineRenderer lineRend;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -31,8 +33,10 @@ public class ImpulsePoint : MonoBehaviour
         bar = canvas.GetComponent<MagicBar>();
         playerRB = player.GetComponent<Rigidbody2D>();
         playerScript = player.GetComponent<PlayerMovement>();
-        rend = GetComponent<SpriteRenderer>();
         col = GetComponent<Collider2D>();
+        anim = GetComponent<Animator>();
+        lineRend = GetComponent<LineRenderer>();
+        lineRend.enabled = false;
     }
 
     // Update is called once per frame
@@ -48,33 +52,22 @@ public class ImpulsePoint : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (playerInArea)
+        if (lineRend.enabled)
         {
-            float distantToCenter = Vector2.Distance(selfPosition.position, player.transform.position);
-            float totalDistance = Vector2.Distance(selfPosition.position, originalPlayerPos);
-            float percentaje = (totalDistance - distantToCenter) / distantToCenter; //Position in a line bettween the original position and the center of the GameObject given as a fraction of one
-            switch (percentaje)
-            {
-                case < 0.5f:
-                    CalculateImpulse(0.35f);
-                    break;
-                case < 0.75f:
-                    CalculateImpulse(0.85f);
-                    break;
-                default:
-                    CalculateImpulse(1);
-                    break;
-            }
-
+            float componentX = player.transform.position.x - selfPosition.position.x;
+            float componentY = player.transform.position.y - selfPosition.position.y;
+            Vector3 vector = new Vector3(componentX, componentY, 0f);
+            lineRend.SetPosition(1, vector*0.7f);
         }
     }
 
-    private void CalculateImpulse(float lerp)
+    private void CalculateImpulse()
     {
-        float componentXAux = selfPosition.position.x - player.transform.position.x;
-        float componentYAux = selfPosition.position.y - player.transform.position.y;
-        float componentX = Mathf.Lerp(componentXAux, -componentXAux, lerp) ;
-        float componentY = Mathf.Lerp(componentYAux, -componentYAux, lerp);
+        float distantToCenter = Vector2.Distance(selfPosition.position, player.transform.position);
+        float totalDistance = Vector2.Distance(selfPosition.position, originalPlayerPos);
+        float percentaje = 1 - (totalDistance - distantToCenter) / totalDistance;//Position in a line bettween the original position and the center of the GameObject given as a fraction of one
+        float componentX = (selfPosition.position.x - player.transform.position.x)*percentaje;
+        float componentY = (selfPosition.position.y - player.transform.position.y)*percentaje;
         impulse = new Vector2(componentX, componentY);
         
     }
@@ -87,11 +80,13 @@ public class ImpulsePoint : MonoBehaviour
         playerRB.velocity = Vector2.zero;
         while (Vector2.Distance(selfPosition.position, player.transform.position) >= 1)
         {
+            CalculateImpulse();
             playerScript.trailRenderer.emitting = true;
             playerRB.AddForce(impulse, ForceMode2D.Impulse);
             if (exitFlag) break;
             yield return null;
         }
+        SoundFXManager.instance.PlaySoundFXClip(dashClip, transform, 1f);
         playerRB.velocity = Vector2.zero;
         playerScript.isImpulsePointAct = false;
         playerScript.trailRenderer.emitting = false;
@@ -101,9 +96,10 @@ public class ImpulsePoint : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            anim.SetBool("PlayerInArea", true);
             playerInArea = true;
+            lineRend.enabled = true;
             exitFlag = false;
-            rend.color = waitingColor;
         }
     }
 
@@ -111,10 +107,11 @@ public class ImpulsePoint : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            anim.SetBool("PlayerInArea", false);
             playerInArea = false;
+            lineRend.enabled = false;
             playerScript.isImpulsePointAct = false;
             exitFlag = true;
-            rend.color = disableColor;
         }
     }
 
@@ -122,8 +119,10 @@ public class ImpulsePoint : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.magenta;
-        float componentX = selfPosition.position.x - player.transform.position.x;
-        float componentY = selfPosition.position.y - player.transform.position.y;
+        float componentX = player.transform.position.x - selfPosition.position.x;
+        //float componentX = selfPosition.position.x - player.transform.position.x;
+        float componentY = player.transform.position.y - selfPosition.position.y;
+        //float componentY = selfPosition.position.y - player.transform.position.y;
         Vector2 vector = new Vector2(componentX, componentY);
         Gizmos.DrawRay(selfPosition.position, vector*0.125f);
     }

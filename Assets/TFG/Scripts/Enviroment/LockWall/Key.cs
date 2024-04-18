@@ -6,9 +6,14 @@ public class Key : MonoBehaviour
 {
 
     public GameObject objective;
-    private Animator anim;
+
     private FollowList listContainingSelf;
     private bool isInList = false;
+
+    private Animator anim;
+
+    [SerializeField] private AudioClip collectKeyClip;
+    [SerializeField] private AudioClip destroyKeyClip;
 
     private void Start()
     {
@@ -32,7 +37,8 @@ public class Key : MonoBehaviour
         if (collision.gameObject.CompareTag("Player") && !isInList)
         {
             listContainingSelf = collision.GetComponentInChildren<FollowList>();
-            objective =listContainingSelf.AddFollower();
+            objective = listContainingSelf.AddFollower();
+            SoundFXManager.instance.PlaySoundFXClip(collectKeyClip, transform, 1f);
             isInList = true;
         }
     }
@@ -40,7 +46,9 @@ public class Key : MonoBehaviour
     public void DestroyKey()
     {
         anim.SetTrigger("hasBeenUsed");
-        listContainingSelf.RemoveTarget(gameObject);
+        SoundFXManager.instance.PlaySoundFXClip(destroyKeyClip, transform, 1f);
+        listContainingSelf.RemoveTarget(objective);
+        listContainingSelf.UpdateTargetsPosition();
     }
 
     public void DestroyObject()

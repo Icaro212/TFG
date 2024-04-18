@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Threading;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -13,7 +14,13 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private float movementInputDirection;
     private bool isFacingRight = true;
-    private bool isWalking;
+
+    //Animation
+    private enum MovementState { iddle, running, jumping, falling, wallsliding, holding, climbing }
+    [SerializeField] private AudioClip jumpClip;
+    [SerializeField] private AudioClip[] walkClips;
+    private float timerSound = 0.0f;
+    private float clipPlayingDuration;
 
     //Jump parameters
     public bool isGrounded { set; get; }
@@ -36,22 +43,9 @@ public class PlayerMovement : MonoBehaviour
     public bool isWallClimbingHoriActive { set; get; }
     #endregion
 
-
-    // For the case that the player enters an specific room and comes back;
     private void Awake()
     {
-        GameObject[] Doors = GameObject.FindGameObjectsWithTag("Door");
-        foreach (GameObject Door in Doors)
-        {
-            SceneTransaction DoorScript = Door.GetComponent<SceneTransaction>();
-            if (DoorScript.playerHasEnter && DoorScript.sceneOrigin == SceneManager.GetActiveScene().name)
-            {
-                playerTransform.position = DoorScript.playerPosition;
-                Destroy(Door);
-            }
-
-        }
-
+        GameManager.instance.SearchForPlayer();
     }
 
     // Start is called before the first frame update
@@ -75,12 +69,13 @@ public class PlayerMovement : MonoBehaviour
     {
         GravityConditions();
         CheckSurrondings();
-        if (!isImpulsePointAct && !isSpringActive)
+        if (!isImpulsePointAct)
         {
             ApplyMovement();
         }
     }
 
+    //** Controls **
     #region Controls
     private void CheckInputs()
     {
@@ -100,10 +95,13 @@ public class PlayerMovement : MonoBehaviour
             Vector2 force = new Vector2(data.wallJumpVector.x, data.wallJumpVector.y);
             force.x *= currentWallJumpDirection;
             rb.AddForce(force, ForceMode2D.Impulse);
+            SoundFXManager.instance.PlaySoundFXClip(jumpClip, transform, 1f);
             Flip();
-        }else if (isGrounded || (data.LastOnGroundTime > 0))
+        }
+        else if (isGrounded || (data.LastOnGroundTime > 0))
         {
             rb.AddForce(Vector2.up * data.jumpForce, ForceMode2D.Impulse);
+            SoundFXManager.instance.PlaySoundFXClip(jumpClip, transform, 1f);
         }
     }
 
@@ -134,6 +132,15 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
         }
 
+        if(interpolVal == 1 && targetSpeed != 0 && timerSound > clipPlayingDuration && isGrounded)
+        {
+            int rand = Random.Range(0, walkClips.Length);
+            AudioClip clipAux = walkClips[rand];
+            clipPlayingDuration = clipAux.length;
+            SoundFXManager.instance.PlaySoundFXClip(clipAux, transform, 1f);
+            timerSound = 0.0f;
+        }
+
     }
 
     private void WallSlide()
@@ -147,18 +154,27 @@ public class PlayerMovement : MonoBehaviour
     private void ApplyMovement()
     {
         if (isWallJumping)
+        {
             Run(0.01f);
+        }
+        else if(isSpringActive)
+        {
+            Run(0.025f);
+        }
         else
+        {
             Run(1);
+        }
 
-        if (isTouchingWall && !isGrounded && rb.velocity.y < 0 && rb.velocity.y <= data.wallSlideSpeed) //WallSliding
+        if(isTouchingWall && !isGrounded && rb.velocity.y < 0 && rb.velocity.y <= data.wallSlideSpeed) //Wallslide
+        {
             WallSlide();
-            
-
+        }
     }
     #endregion
 
     //** Checks **
+    #region Checks
     private void CheckSurrondings()
     {
         // Returns whether or not the player is grouned or it´s touching the wall
@@ -174,11 +190,13 @@ public class PlayerMovement : MonoBehaviour
         else
             isGrounded = false;
 
-        // Returns whether or not the player is touching the wall
-        isTouchingWall = Physics2D.Raycast(wallCheck.position, transform.right, data.wallCheckDistance, data.layerMask);
-        
         // Updates the Wall Jump direction 
         data.wallJumpDirection = isFacingRight ? -1 : 1;
+
+        // Returns whether or not the player is touching the wall
+        Vector2 direction = isFacingRight ? Vector2.right : Vector2.left;
+        isTouchingWall = Physics2D.Raycast(wallCheck.position, direction, data.wallCheckDistance, data.layerMask);       
+
     }
 
     private void GravityConditions()
@@ -228,12 +246,45 @@ public class PlayerMovement : MonoBehaviour
     {
         rb.gravityScale = gravityScale;
     }
+    #endregion
 
     //** Animation Relate Stuff **
     #region Animation Stuff
     private void UpdateAnimations()
     {
-        data.anim.SetBool("isWalking", isWalking);
+        MovementState state;
+        if(movementInputDirection != 0)
+        {
+            state = MovementState.running;
+        }
+        else
+        {
+            state = MovementState.iddle;
+        }
+
+        if(rb.velocity.y > .1f)
+        {
+            state = MovementState.jumping;
+        }
+        else if(rb.velocity.y < -.1f)
+        {
+            state = MovementState.falling;
+        }
+
+        if(isTouchingWall && rb.velocity.y < -.1f)
+        {
+            state = MovementState.wallsliding;
+        }
+
+        if((isWallClimbingActive || isWallClimbingHoriActive) && rb.velocity.y != 0)
+        {
+            state = MovementState.climbing;
+        }
+        else if(isWallClimbingActive || isWallClimbingHoriActive)
+        {
+            state = MovementState.holding;
+        }
+        data.anim.SetInteger("state", (int) state);
     }
     private void Flip()
     {
@@ -258,7 +309,16 @@ public class PlayerMovement : MonoBehaviour
         {
             Flip();
         }
-        isWalking = movementInputDirection != 0;
+    }
+
+    private void Respawn()
+    {
+        GameManager.instance.Respawn();
+    }
+
+    private void PlayWalkSound()
+    {
+
     }
     #endregion
 
@@ -268,12 +328,14 @@ public class PlayerMovement : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(groundCheck.position, data.groundCheckRadius);
-        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + data.wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
+        float direction = isFacingRight ? wallCheck.position.x + data.wallCheckDistance : wallCheck.position.x - data.wallCheckDistance;
+        Gizmos.DrawLine(wallCheck.position, new Vector3(direction, wallCheck.position.y, wallCheck.position.z));
     }
 
     private void TimeCounter()
     {
-        data.LastOnGroundTime -= Time.deltaTime;       
+        data.LastOnGroundTime -= Time.deltaTime;
+        timerSound += Time.deltaTime;
     }
     #endregion
 }

@@ -130,6 +130,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objective: {fileID: 0}
+  collectKeyClip: {fileID: 8300000, guid: 9a87607a6316a1a42967ea12f0383cde, type: 3}
+  destroyKeyClip: {fileID: 8300000, guid: a6197915ae0ba8c40bebf1862c9cc71a, type: 3}
 --- !u!50 &6308917071954147008
 Rigidbody2D:
   serializedVersion: 4
