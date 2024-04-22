@@ -36,11 +36,12 @@ public class PlayerMovement : MonoBehaviour
     private float currentWallJumpDirection;
 
     //Magic parameters
-    public bool isImpulsePointAct { set; get; }
     public TrailRenderer trailRenderer { set; get; }
+    public bool isImpulsePointAct { set; get; }
     public bool isSpringActive { set; get; }
     public bool isWallClimbingActive { set; get; }
     public bool isWallClimbingHoriActive { set; get; }
+    public bool isFanActivated { set; get; }
     #endregion
 
     private void Awake()
@@ -98,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
             SoundFXManager.instance.PlaySoundFXClip(jumpClip, transform, 1f);
             Flip();
         }
-        else if (isGrounded || (data.LastOnGroundTime > 0))
+        else if ((isGrounded || data.LastOnGroundTime > 0) && !isFanActivated)
         {
             rb.AddForce(Vector2.up * data.jumpForce, ForceMode2D.Impulse);
             SoundFXManager.instance.PlaySoundFXClip(jumpClip, transform, 1f);
@@ -109,7 +110,7 @@ public class PlayerMovement : MonoBehaviour
     {
         
         float targetSpeed = isGrounded ?  movementInputDirection * data.maxSpeed : movementInputDirection * data.maxSpeedAir;
-        if (targetSpeed.Equals(0) && !isWallJumping && !isSpringActive)
+        if (targetSpeed.Equals(0) && !isWallJumping && !isSpringActive && !isFanActivated)
         {
             Vector2 auxVector = new Vector2(0, rb.velocity.y);
             rb.velocity = auxVector;
@@ -157,7 +158,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Run(0.01f);
         }
-        else if(isSpringActive)
+        else if(isSpringActive || isFanActivated)
         {
             Run(0.025f);
         }
@@ -209,7 +210,7 @@ public class PlayerMovement : MonoBehaviour
         {
             SetGravity(0);
         }
-        else if (isSpringActive)
+        else if (isSpringActive || isFanActivated)
         {
             SetGravity(data.gravityScale);
         }
