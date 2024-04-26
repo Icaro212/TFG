@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ClimbingWalls : MonoBehaviour
@@ -13,6 +14,7 @@ public class ClimbingWalls : MonoBehaviour
     private PlayerMovement playerScript;
 
     private bool hasCollide;
+    [SerializeField] private List<GameObject> areasOfCollision;
 
     private float timerCost = 0f;
     public float costInterval = 0.25f;
@@ -35,6 +37,11 @@ public class ClimbingWalls : MonoBehaviour
         {
             routineRunning = StartCoroutine(VerticalClimb());
         }
+    }
+
+    private void FixedUpdate()
+    {
+        hasCollide = areasOfCollision.Any(area => area.GetComponent<AreaOfEffectWallHori>().isInArea);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

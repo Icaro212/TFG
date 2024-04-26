@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour
     //Restart objects when Dying
     public string activeRoom { set; get; }
     public Dictionary<string, HashSet<GameObject>> objectsInRoom { set; get; }
-    private bool restartNotRunning;
 
     //Player Death
     private Rigidbody2D rb;
@@ -69,10 +68,9 @@ public class GameManager : MonoBehaviour
         rb.gravityScale = 2.5f;
         anim.SetTrigger("respawn");
         SoundFXManager.instance.PlaySoundFXClip(respawnClip, transform, 1f);
-        col.isTrigger = false;
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        StartCoroutine(RestartingRoom(activeRoom));
+        StartCoroutine(RestartingRoom(activeRoom));   
     }
+    
 
     public void Die()
     {
@@ -97,6 +95,9 @@ public class GameManager : MonoBehaviour
                 StartCoroutine(elemt.Restart());
             }
         }
+        yield return new WaitForSeconds(0.7f);
+        col.isTrigger = false;
+        rb.bodyType = RigidbodyType2D.Dynamic;
     }
 
     public IEnumerator LoadingScene(string name)
@@ -111,6 +112,7 @@ public class GameManager : MonoBehaviour
         List<string> levels = new List<string>();
         levels.Add("Tutorial");
         levels.Add("Level 1");
+        levels.Add("Level 2");
 
         if (PlayerPrefs.GetInt("FirstTimePlaying", 1) == 1)
         {

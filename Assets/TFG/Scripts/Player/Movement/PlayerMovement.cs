@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     public Transform playerTransform;
     private Rigidbody2D rb;
     private float movementInputDirection;
-    private bool isFacingRight = true;
+    private bool isFacingRight = true;  
 
     //Animation
     private enum MovementState { iddle, running, jumping, falling, wallsliding, holding, climbing }
@@ -55,6 +55,9 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         data.anim = GetComponent<Animator>();
         trailRenderer = GetComponent<TrailRenderer>();
+        data.floorInXAixs = true;
+        data.JumpPositive = true;
+        data.orientation = new Vector2(1, 0);
     }
 
     // Update is called once per frame. We will used to control all the checks necesary for the enviroment.
@@ -80,45 +83,47 @@ public class PlayerMovement : MonoBehaviour
     #region Controls
     private void CheckInputs()
     {
-        movementInputDirection = Input.GetAxisRaw("Horizontal");
+        movementInputDirection =  data.floorInXAixs ?  Input.GetAxisRaw("Horizontal") : Input.GetAxisRaw("Vertical") ;
         if (Input.GetButtonDown("Jump"))
             Jump();
         if (Input.GetButtonUp("Jump"))
             isJumpCut = true;
 
     }
+
     private void Jump()
     {
         if (isTouchingWall && !isGrounded)
         {
             currentWallJumpDirection = data.wallJumpDirection;
             isWallJumping = true;
-            Vector2 force = new Vector2(data.wallJumpVector.x, data.wallJumpVector.y);
-            force.x *= currentWallJumpDirection;
+            int signWallJumpY = data.JumpPositive ? 1 : -1;
+            Vector2 force = data.floorInXAixs ? new Vector2(data.wallJumpVector.x * currentWallJumpDirection, data.wallJumpVector.y * signWallJumpY) : new Vector2(data.wallJumpVector.y * signWallJumpY, data.wallJumpVector.x * currentWallJumpDirection);
             rb.AddForce(force, ForceMode2D.Impulse);
             SoundFXManager.instance.PlaySoundFXClip(jumpClip, transform, 1f);
             Flip();
         }
         else if ((isGrounded || data.LastOnGroundTime > 0) && !isFanActivated)
         {
-            rb.AddForce(Vector2.up * data.jumpForce, ForceMode2D.Impulse);
+            int signJump = data.JumpPositive ? 1 : -1;
+            Vector2 jumpVector = data.floorInXAixs ? Vector2.up * signJump : Vector2.right * signJump;
+            rb.AddForce(jumpVector * data.jumpForce, ForceMode2D.Impulse);
             SoundFXManager.instance.PlaySoundFXClip(jumpClip, transform, 1f);
         }
     }
 
     private void Run(float interpolVal)
     {
-        
-        float targetSpeed = isGrounded ?  movementInputDirection * data.maxSpeed : movementInputDirection * data.maxSpeedAir;
+
+        float targetSpeed = isGrounded ? movementInputDirection * data.maxSpeed : movementInputDirection * data.maxSpeedAir;
         if (targetSpeed.Equals(0) && !isWallJumping && !isSpringActive && !isFanActivated)
         {
-            Vector2 auxVector = new Vector2(0, rb.velocity.y);
+            Vector2 auxVector = data.floorInXAixs ? new Vector2(0, rb.velocity.y) : new Vector2(rb.velocity.x, 0);
             rb.velocity = auxVector;
         }
         else
         {
-            targetSpeed = Mathf.Lerp(rb.velocity.x, targetSpeed, interpolVal);
-
+            targetSpeed = data.floorInXAixs ? Mathf.Lerp(rb.velocity.x, targetSpeed, interpolVal) : Mathf.Lerp(rb.velocity.y, targetSpeed, interpolVal);
             float accelVal;
             if (data.LastOnGroundTime > 0)
             {
@@ -128,12 +133,13 @@ public class PlayerMovement : MonoBehaviour
             {
                 accelVal = (Mathf.Abs(targetSpeed) > 0.01f) ? data.runAccelAmount * data.accelInAir : data.runDeccelAmount * data.deccelInAir;
             }
-            float speedDif = targetSpeed - rb.velocity.x;
+            float speedDif = data.floorInXAixs ? targetSpeed - rb.velocity.x : targetSpeed - rb.velocity.y;
             float movement = speedDif * accelVal;
-            rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
+            Vector2 forceMovement = data.floorInXAixs ? movement * Vector2.right : movement * Vector2.up;
+            rb.AddForce(forceMovement, ForceMode2D.Force);
         }
 
-        if(interpolVal == 1 && targetSpeed != 0 && timerSound > clipPlayingDuration && isGrounded)
+        if (interpolVal == 1 && targetSpeed != 0 && timerSound > clipPlayingDuration && isGrounded) //Wallking Sound
         {
             int rand = Random.Range(0, walkClips.Length);
             AudioClip clipAux = walkClips[rand];
@@ -146,10 +152,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void WallSlide()
     {
-        float speedDiff = data.wallSlideSpeed - rb.velocity.y;
+        Vector2 wallDirection = data.JumpPositive ? (data.floorInXAixs ? Vector2.down : Vector2.left) : (data.floorInXAixs ? Vector2.up : Vector2.right);
+        Vector2 currentVelocity = rb.velocity;
+        float speedDiff = Vector2.Dot(currentVelocity, wallDirection) - data.wallSlideSpeed;
         float movement = speedDiff * data.wallSlideAccel;
-        movement = Mathf.Clamp(movement, - Mathf.Abs(speedDiff) * (1/Time.fixedDeltaTime),  Mathf.Abs(speedDiff) * (1/Time.fixedDeltaTime));
-        rb.AddForce(movement * Vector2.up);
+        movement = Mathf.Clamp(movement, -Mathf.Abs(speedDiff) * (1 / Time.fixedDeltaTime), Mathf.Abs(speedDiff) * (1 / Time.fixedDeltaTime));
+        rb.AddForce(movement * wallDirection);
     }
 
     private void ApplyMovement()
@@ -167,7 +175,10 @@ public class PlayerMovement : MonoBehaviour
             Run(1);
         }
 
-        if(isTouchingWall && !isGrounded && rb.velocity.y < 0 && rb.velocity.y <= data.wallSlideSpeed) //Wallslide
+
+        int jumpingDirection = data.JumpPositive ? 1 : -1;
+        bool velocityWallActive = data.floorInXAixs ? rb.velocity.y * jumpingDirection < 0 && Mathf.Abs(rb.velocity.y) <= data.wallSlideSpeed : rb.velocity.x * jumpingDirection < 0 && Mathf.Abs(rb.velocity.x) <= data.wallSlideSpeed;
+        if (isTouchingWall && !isGrounded && velocityWallActive) //Wallslide
         {
             WallSlide();
         }
@@ -195,18 +206,25 @@ public class PlayerMovement : MonoBehaviour
         data.wallJumpDirection = isFacingRight ? -1 : 1;
 
         // Returns whether or not the player is touching the wall
-        Vector2 direction = isFacingRight ? Vector2.right : Vector2.left;
-        isTouchingWall = Physics2D.Raycast(wallCheck.position, direction, data.wallCheckDistance, data.layerMask);       
+        int direction = isFacingRight ? 1 : -1;
+        Vector2 directionVector = data.floorInXAixs ? Vector2.right * direction : Vector2.up * direction;
+        isTouchingWall = Physics2D.Raycast(wallCheck.position, directionVector, data.wallCheckDistance, data.layerMask);
+
+        //Updates Player Orientation
+        data.orientation = directionVector;
 
     }
 
     private void GravityConditions()
     {
-        if (isTouchingWall && !isGrounded && rb.velocity.y < 0 && rb.velocity.y <= data.wallSlideSpeed) //If it´s wallSliding 
+        int directionFalling = data.JumpPositive ? 1 : -1;
+        float velocityFall = data.floorInXAixs ? rb.velocity.y * directionFalling : rb.velocity.x * directionFalling;
+
+        if (isTouchingWall && !isGrounded && velocityFall < 0) //If it´s wallSliding 
         {
             SetGravity(0);
         }
-        else if(isImpulsePointAct) //Impulse  
+        else if (isImpulsePointAct) //Impulse  
         {
             SetGravity(0);
         }
@@ -225,16 +243,14 @@ public class PlayerMovement : MonoBehaviour
         else if (isJumpCut) //Jump Button is release and thus the jump is cut
         {
             SetGravity(data.gravityScale * data.fallGravityMult);
-            rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -data.maxFallSpeed));
         }
-        else if((!isGrounded || isWallJumping || rb.velocity.y < 0) && Mathf.Abs(rb.velocity.y) < data.jumpHangTimeThreshold) //Jump is reaching its apex and we want to stay a little there
+        else if ((!isGrounded || isWallJumping || velocityFall < 0) && Mathf.Abs(velocityFall) < data.jumpHangTimeThreshold) //Jump is reaching its apex and we want to stay a little there
         {
             SetGravity(data.gravityScale * data.jumpHangGravityMul);
         }
-        else if (rb.velocity.y < 0) //Normal Fall
+        else if (velocityFall < 0) //Normal Fall
         {
             SetGravity(data.gravityScale * data.fallGravityMult);
-            rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -data.maxFallSpeed));
         }
         else //Default Case
         {
@@ -254,6 +270,9 @@ public class PlayerMovement : MonoBehaviour
     private void UpdateAnimations()
     {
         MovementState state;
+        float jumpingVelocitySign = data.JumpPositive ? 1 : -1;
+        float jumpingVelocity = data.floorInXAixs ? rb.velocity.y * jumpingVelocitySign : rb.velocity.x * jumpingVelocitySign;
+
         if(movementInputDirection != 0)
         {
             state = MovementState.running;
@@ -263,33 +282,35 @@ public class PlayerMovement : MonoBehaviour
             state = MovementState.iddle;
         }
 
-        if(rb.velocity.y > .1f)
+
+        if(jumpingVelocity > .1f)
         {
             state = MovementState.jumping;
         }
-        else if(rb.velocity.y < -.1f)
+        else if(jumpingVelocity < -.1f)
         {
             state = MovementState.falling;
         }
 
-        if(isTouchingWall && rb.velocity.y < -.1f)
+        if(isTouchingWall && jumpingVelocity < -.1f && !isGrounded)
         {
             state = MovementState.wallsliding;
         }
 
-        if((isWallClimbingActive || isWallClimbingHoriActive) && rb.velocity.y != 0)
+        if((isWallClimbingActive || isWallClimbingHoriActive) && jumpingVelocity != 0)
         {
             state = MovementState.climbing;
         }
-        else if(isWallClimbingActive || isWallClimbingHoriActive)
+        else if (isWallClimbingActive || isWallClimbingHoriActive)
         {
             state = MovementState.holding;
         }
         data.anim.SetInteger("state", (int) state);
     }
-    private void Flip()
+    public void Flip()
     {
         isFacingRight = !isFacingRight;
+        data.wallJumpDirection = -data.wallJumpDirection;
         if (isWallClimbingHoriActive)
         {
             transform.Rotate(180.0f, 0.0f, 0.0f); 
@@ -298,7 +319,7 @@ public class PlayerMovement : MonoBehaviour
         {
             transform.Rotate(0.0f, 180.0f, 0.0f);
         }
-        data.wallJumpDirection = -data.wallJumpDirection;
+
     }
     private void CheckMomentDirectionAnimation()
     {
@@ -315,11 +336,6 @@ public class PlayerMovement : MonoBehaviour
     private void Respawn()
     {
         GameManager.instance.Respawn();
-    }
-
-    private void PlayWalkSound()
-    {
-
     }
     #endregion
 

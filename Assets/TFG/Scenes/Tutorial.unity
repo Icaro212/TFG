@@ -16877,6 +16877,77 @@ Transform:
   m_Father: {fileID: 1879491211}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &889598679
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 889598680}
+  - component: {fileID: 889598682}
+  - component: {fileID: 889598681}
+  m_Layer: 0
+  m_Name: Area1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &889598680
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889598679}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 98, y: 11.54, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1421802411}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &889598681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889598679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b897cd37c1596444a1763e29edaed97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!61 &889598682
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889598679}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 13}
+  m_EdgeRadius: 0
 --- !u!1001 &924173591
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18888,7 +18959,7 @@ PrefabInstance:
     - target: {fileID: 6448033747069367602, guid: 8d46921d7825b434aafb71f77e243087, type: 3}
       propertyPath: m_TileAssetArray.Array.data[16].m_Data
       value: 
-      objectReference: {fileID: 11400000, guid: 8dba1b4b64f28054887d7fb961749194, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 6448033747069367602, guid: 8d46921d7825b434aafb71f77e243087, type: 3}
       propertyPath: m_TileAssetArray.Array.data[17].m_Data
       value: 
@@ -18960,7 +19031,7 @@ PrefabInstance:
     - target: {fileID: 6448033747069367602, guid: 8d46921d7825b434aafb71f77e243087, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[15].m_Data
       value: 
-      objectReference: {fileID: -2137401149, guid: 3162fee2e5460b34eb91c380b4cb1631, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 6448033747069367602, guid: 8d46921d7825b434aafb71f77e243087, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[16].m_Data
       value: 
@@ -18975,7 +19046,7 @@ PrefabInstance:
       objectReference: {fileID: 1739121904, guid: eee55ca3d38f0da40bf24fc9dcff8ecd, type: 3}
     - target: {fileID: 6448033747069367602, guid: 8d46921d7825b434aafb71f77e243087, type: 3}
       propertyPath: m_Tiles.Array.data[0].second.m_TileIndex
-      value: 16
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6448033747069367602, guid: 8d46921d7825b434aafb71f77e243087, type: 3}
       propertyPath: m_Tiles.Array.data[1].second.m_TileIndex
@@ -19423,11 +19494,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6448033747069367602, guid: 8d46921d7825b434aafb71f77e243087, type: 3}
       propertyPath: m_TileAssetArray.Array.data[15].m_RefCount
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6448033747069367602, guid: 8d46921d7825b434aafb71f77e243087, type: 3}
       propertyPath: m_TileAssetArray.Array.data[16].m_RefCount
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6448033747069367602, guid: 8d46921d7825b434aafb71f77e243087, type: 3}
       propertyPath: m_TileAssetArray.Array.data[17].m_RefCount
@@ -19687,11 +19758,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6448033747069367602, guid: 8d46921d7825b434aafb71f77e243087, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[14].m_RefCount
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6448033747069367602, guid: 8d46921d7825b434aafb71f77e243087, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[15].m_RefCount
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6448033747069367602, guid: 8d46921d7825b434aafb71f77e243087, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[16].m_RefCount
@@ -19743,7 +19814,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6448033747069367602, guid: 8d46921d7825b434aafb71f77e243087, type: 3}
       propertyPath: m_Tiles.Array.data[0].second.m_TileSpriteIndex
-      value: 15
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 6448033747069367602, guid: 8d46921d7825b434aafb71f77e243087, type: 3}
       propertyPath: m_Tiles.Array.data[1].second.m_TileSpriteIndex
@@ -20297,6 +20368,14 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 511227616}
+    - target: {fileID: 6448033747069367603, guid: 8d46921d7825b434aafb71f77e243087, type: 3}
+      propertyPath: areasOfCollision.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6448033747069367603, guid: 8d46921d7825b434aafb71f77e243087, type: 3}
+      propertyPath: areasOfCollision.Array.data[0]
+      value: 
+      objectReference: {fileID: 889598679}
     - target: {fileID: 6448033747069367604, guid: 8d46921d7825b434aafb71f77e243087, type: 3}
       propertyPath: m_Name
       value: Climbing Walls Vertical

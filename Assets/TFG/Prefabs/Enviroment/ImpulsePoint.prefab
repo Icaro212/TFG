@@ -121,6 +121,7 @@ MonoBehaviour:
   habilityCost: 5
   selfPosition: {fileID: 1684380802333203228}
   associatedRoom: {fileID: 0}
+  timeLimit: 0.25
   dashClip: {fileID: 8300000, guid: d3b2888e8ff44ec49ae61e2014341c06, type: 3}
 --- !u!95 &2910773383433024492
 Animator:

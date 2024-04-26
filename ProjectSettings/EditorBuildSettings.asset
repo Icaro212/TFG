@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/TFG/Scenes/Level 1.unity
     guid: 505260b0b24d2854389680bf980c9214
+  - enabled: 1
+    path: Assets/TFG/Scenes/Level 2.unity
+    guid: 1f6f05d06c3977e4aab5d5febf2a44e6
   m_configObjects: {}

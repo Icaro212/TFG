@@ -24,7 +24,6 @@ public class ClimbingWallsHori : MonoBehaviour
     private Coroutine routineRunning;
 
     [SerializeField] private AudioClip climbClip;
-
     // Start is called before the first frame update
     void Start()
     {
