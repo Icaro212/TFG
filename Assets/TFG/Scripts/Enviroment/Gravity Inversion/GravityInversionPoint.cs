@@ -8,6 +8,7 @@ public class GravityInversionPoint : MonoBehaviour
     [SerializeField] private GameObject player;
     private Transform playerTransform;
     private PlayerData data;
+    private Rigidbody2D playerRb;
     [SerializeField] private Vector2 gravityDirection = Vector3.down;
     [SerializeField] private int degree;
     [SerializeField] private Vector2 orientationObj;
@@ -18,6 +19,7 @@ public class GravityInversionPoint : MonoBehaviour
     {
         playerTransform = player.GetComponent<Transform>();
         data = player.GetComponent<PlayerMovement>().data;
+        playerRb = player.GetComponent<Rigidbody2D>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -25,6 +27,7 @@ public class GravityInversionPoint : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             SoundFXManager.instance.PlaySoundFXClip(gravityChangeClip, transform, 1f);
+            playerRb.velocity = Vector2.zero;
             ChangeGravityDirection();
             RotateControls();
         }

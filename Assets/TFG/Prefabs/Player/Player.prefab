@@ -157,7 +157,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!70 &8845947808889196352
 CapsuleCollider2D:
@@ -393,6 +393,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8845947808889196354}
     m_Modifications:
+    - target: {fileID: 7186526607729363819, guid: 1be5d90a30706624aaa0453569cabbdf, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7186526607871601504, guid: 1be5d90a30706624aaa0453569cabbdf, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -411,6 +415,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7186526607871601507, guid: 1be5d90a30706624aaa0453569cabbdf, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7186526608494020661, guid: 1be5d90a30706624aaa0453569cabbdf, type: 3}
+      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7186526608621440520, guid: 1be5d90a30706624aaa0453569cabbdf, type: 3}
@@ -524,6 +532,10 @@ PrefabInstance:
     - target: {fileID: 7186526608621440527, guid: 1be5d90a30706624aaa0453569cabbdf, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7186526608902114349, guid: 1be5d90a30706624aaa0453569cabbdf, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1be5d90a30706624aaa0453569cabbdf, type: 3}

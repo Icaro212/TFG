@@ -6,12 +6,13 @@ public class AreaOfEffectWallHori : MonoBehaviour
 {
 
     public bool isInArea { set; get; }
+    public Vector2 directionWall;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            isInArea = true;
+            isInArea = true; 
         }
     }
 

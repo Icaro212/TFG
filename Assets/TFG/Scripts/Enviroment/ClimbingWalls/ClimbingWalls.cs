@@ -22,6 +22,10 @@ public class ClimbingWalls : MonoBehaviour
     private Coroutine routineRunning;
 
     [SerializeField] private AudioClip climbClip;
+
+    [SerializeField] private float extendedFrames = 5.0f;
+    private bool buttonPressed = false;
+    private int frameCounter = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,7 +37,20 @@ public class ClimbingWalls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (hasCollide && Input.GetButtonDown("Fire3")  && bar.CheckValidityMovement(habilityCostPerSecond) && !playerScript.isWallClimbingActive)
+        if (Input.GetButtonDown("Fire3") && routineRunning == null)
+        {
+            buttonPressed = true;
+            frameCounter = 0;
+        }
+
+        if (buttonPressed)
+        {
+            frameCounter++;
+            if (frameCounter >= extendedFrames)
+                buttonPressed = false;
+        }
+
+        if (hasCollide && buttonPressed && bar.CheckValidityMovement(habilityCostPerSecond) && !playerScript.isWallClimbingActive)
         {
             routineRunning = StartCoroutine(VerticalClimb());
         }

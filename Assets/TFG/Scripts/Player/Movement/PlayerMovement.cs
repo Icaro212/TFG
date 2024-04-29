@@ -168,7 +168,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if(isSpringActive || isFanActivated)
         {
-            Run(0.025f);
+            Run(0.045f);
         }
         else
         {
@@ -228,9 +228,13 @@ public class PlayerMovement : MonoBehaviour
         {
             SetGravity(0);
         }
-        else if (isSpringActive || isFanActivated)
+        else if (isFanActivated)
         {
             SetGravity(data.gravityScale);
+        }
+        else if (isSpringActive)
+        {
+            SetGravity(data.gravityScale * data.jumpHangGravityMul);
         }
         else if (isWallClimbingActive)
         {
@@ -311,15 +315,7 @@ public class PlayerMovement : MonoBehaviour
     {
         isFacingRight = !isFacingRight;
         data.wallJumpDirection = -data.wallJumpDirection;
-        if (isWallClimbingHoriActive)
-        {
-            transform.Rotate(180.0f, 0.0f, 0.0f); 
-        }
-        else
-        {
-            transform.Rotate(0.0f, 180.0f, 0.0f);
-        }
-
+        transform.Rotate(0.0f, 180.0f, 0.0f);
     }
     private void CheckMomentDirectionAnimation()
     {

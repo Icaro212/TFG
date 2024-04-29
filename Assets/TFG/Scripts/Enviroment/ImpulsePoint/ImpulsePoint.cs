@@ -86,6 +86,7 @@ public class ImpulsePoint : MonoBehaviour
     {
         playerScript.isImpulsePointAct = true;
         bar.Cost(habilityCost);
+        timer = 0;
         yield return null;
         playerRB.velocity = Vector2.zero;
         while (Vector2.Distance(selfPosition.position, player.transform.position) >= 1)
@@ -100,6 +101,7 @@ public class ImpulsePoint : MonoBehaviour
         SoundFXManager.instance.PlaySoundFXClip(dashClip, transform, 1f);
         playerRB.velocity = Vector2.zero;
         playerScript.isImpulsePointAct = false;
+        timer = 0;
         playerScript.trailRenderer.emitting = false;
     }
 
