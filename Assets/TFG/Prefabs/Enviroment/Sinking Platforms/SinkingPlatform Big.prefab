@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 362485906032120841, guid: ccd83ece02207b34298a223bf7859c28, type: 3}
       propertyPath: m_Name
-      value: SinkingPlatform
+      value: SinkingPlatform Big
       objectReference: {fileID: 0}
     - target: {fileID: 362485906032120852, guid: ccd83ece02207b34298a223bf7859c28, type: 3}
       propertyPath: m_RootOrder
@@ -58,7 +58,19 @@ PrefabInstance:
     - target: {fileID: 362485906032120853, guid: ccd83ece02207b34298a223bf7859c28, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: dddae7836e416e247843b1f7cd957d53, type: 3}
+      objectReference: {fileID: 21300000, guid: 5f0aceea9189ed44ba56bae0068993ff, type: 3}
+    - target: {fileID: 362485906032120853, guid: ccd83ece02207b34298a223bf7859c28, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 362485906032120853, guid: ccd83ece02207b34298a223bf7859c28, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 362485906032120853, guid: ccd83ece02207b34298a223bf7859c28, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 362485906032120854, guid: ccd83ece02207b34298a223bf7859c28, type: 3}
       propertyPath: m_Size.x
       value: 3
