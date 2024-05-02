@@ -14,7 +14,9 @@ public class ClimbingWallsHori : MonoBehaviour
     private Transform playerTransform;
     private PlayerMovement playerScript;
 
-
+    private AreaOfEffectWallHori areaActivated;
+    private Vector2 dirrectionOfCurrentWall;
+    private bool hasBeenRotate;
     private bool hasCollide;
     [SerializeField] private List<GameObject> areasOfCollision;
 
@@ -25,6 +27,11 @@ public class ClimbingWallsHori : MonoBehaviour
 
     [SerializeField] private AudioClip climbClip;
 
+    [SerializeField] private float extendedFrames = 5.0f;
+    private bool buttonPressed = false;
+    private int frameCounter = 0;
+
+    private Vector2 dirrectionPlayer;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,13 +39,30 @@ public class ClimbingWallsHori : MonoBehaviour
         playerRB = player.GetComponent<Rigidbody2D>();
         playerScript = player.GetComponent<PlayerMovement>();
         playerTransform = player.GetComponent<Transform>();
+        hasBeenRotate = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (hasCollide && Input.GetButtonDown("Fire3") && bar.CheckValidityMovement(habilityCostPerSecond) && !playerScript.isWallClimbingHoriActive)
+        if (Input.GetButtonDown("Fire3") && routineRunning == null)
         {
+            buttonPressed = true;
+            frameCounter = 0;
+            dirrectionPlayer = playerScript.data.orientation;
+        }
+
+        if (buttonPressed)
+        {
+            frameCounter++;
+            if (frameCounter >= extendedFrames)
+                buttonPressed = false;
+        }
+
+        if (hasCollide && buttonPressed && bar.CheckValidityMovement(habilityCostPerSecond) && !playerScript.isWallClimbingHoriActive)
+        {
+            areaActivated = areasOfCollision.Find(area => area.GetComponent<AreaOfEffectWallHori>().isInArea).gameObject.GetComponent<AreaOfEffectWallHori>();
+            dirrectionOfCurrentWall = areaActivated.directionWall;
             routineRunning = StartCoroutine(HorizontalClimb());
         }
     }
@@ -48,9 +72,24 @@ public class ClimbingWallsHori : MonoBehaviour
         hasCollide = areasOfCollision.Any(area => area.GetComponent<AreaOfEffectWallHori>().isInArea);
     }
 
-    private void Rotate(float z)
+    private void Rotate()
     {
-        playerTransform.Rotate(0.0f, 0.0f, z);
+        float angle = Vector2.Angle(dirrectionPlayer, dirrectionOfCurrentWall);
+        if(angle == 90 || angle == 270)
+        {
+            hasBeenRotate = true;
+            playerTransform.Rotate(0.0f, 0.0f, 90.0f);
+        }
+    }
+
+    private void ReturnToOrigPos()
+    {
+        Debug.Log(hasBeenRotate);
+        if (hasBeenRotate)
+        {
+            hasBeenRotate = false;
+            playerTransform.Rotate(0.0f, 0.0f, 270.0f);
+        }
     }
 
 
@@ -58,18 +97,18 @@ public class ClimbingWallsHori : MonoBehaviour
     {
         playerScript.isWallClimbingHoriActive = true;
         playerRB.velocity = Vector2.zero;
-        Rotate(90f);
+        Rotate();
         while (bar.CheckValidityMovement(habilityCostPerSecond) && hasCollide)
         {
             float x = Input.GetAxis("Horizontal");
             float speedModifier = x > 0 ? .5f : 1;
-            if(x!=0)
-                SoundFXManager.instance.PlaySoundFXClip(climbClip, transform, 1f);
             playerRB.velocity = new Vector2(x * (13 * speedModifier), playerRB.velocity.y);
             timerCost += Time.deltaTime;
             if (timerCost >= costInterval)
             {
                 bar.Cost(habilityCostPerSecond);
+                if (x != 0)
+                    SoundFXManager.instance.PlaySoundFXClip(climbClip, transform, 1f);
                 timerCost = 0f;
             }
             if (routineRunning != null && Input.GetButtonDown("Fire3"))
@@ -79,7 +118,9 @@ public class ClimbingWallsHori : MonoBehaviour
             yield return null;
         }
         playerScript.isWallClimbingHoriActive = false;
-        Rotate(270f);
+        areaActivated = null;
+        routineRunning = null;
+        ReturnToOrigPos();
 
 
     }

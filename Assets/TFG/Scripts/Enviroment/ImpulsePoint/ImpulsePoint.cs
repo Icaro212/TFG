@@ -20,6 +20,8 @@ public class ImpulsePoint : MonoBehaviour
     private Vector3 originalPlayerPos;
     private bool playerInArea;
     private bool exitFlag = false;
+    [SerializeField] private float timeLimit;
+    private float timer;
 
     private Animator anim;
     [SerializeField] private AudioClip dashClip;
@@ -47,6 +49,14 @@ public class ImpulsePoint : MonoBehaviour
         {
             originalPlayerPos = player.transform.position;
             StartCoroutine(Impulse());
+        }
+        if(timer >= timeLimit)
+        {
+            anim.SetBool("PlayerInArea", false);
+            playerInArea = false;
+            lineRend.enabled = false;
+            playerScript.isImpulsePointAct = false;
+            exitFlag = true;
         }
     }
 
@@ -76,6 +86,7 @@ public class ImpulsePoint : MonoBehaviour
     {
         playerScript.isImpulsePointAct = true;
         bar.Cost(habilityCost);
+        timer = 0;
         yield return null;
         playerRB.velocity = Vector2.zero;
         while (Vector2.Distance(selfPosition.position, player.transform.position) >= 1)
@@ -84,11 +95,13 @@ public class ImpulsePoint : MonoBehaviour
             playerScript.trailRenderer.emitting = true;
             playerRB.AddForce(impulse, ForceMode2D.Impulse);
             if (exitFlag) break;
+            timer += Time.deltaTime;
             yield return null;
         }
         SoundFXManager.instance.PlaySoundFXClip(dashClip, transform, 1f);
         playerRB.velocity = Vector2.zero;
         playerScript.isImpulsePointAct = false;
+        timer = 0;
         playerScript.trailRenderer.emitting = false;
     }
 
@@ -120,9 +133,7 @@ public class ImpulsePoint : MonoBehaviour
     {
         Gizmos.color = Color.magenta;
         float componentX = player.transform.position.x - selfPosition.position.x;
-        //float componentX = selfPosition.position.x - player.transform.position.x;
         float componentY = player.transform.position.y - selfPosition.position.y;
-        //float componentY = selfPosition.position.y - player.transform.position.y;
         Vector2 vector = new Vector2(componentX, componentY);
         Gizmos.DrawRay(selfPosition.position, vector*0.125f);
     }

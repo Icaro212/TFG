@@ -47,6 +47,10 @@ public class PlayerData : ScriptableObject
     public Animator anim;
     public LayerMask layerMask;
 
-
+    [Space(5)]
+    [Header("Rotation")]
+    public bool floorInXAixs = true;
+    public bool JumpPositive = true;
+    public Vector2 orientation = new Vector2(1, 0);
 
 }

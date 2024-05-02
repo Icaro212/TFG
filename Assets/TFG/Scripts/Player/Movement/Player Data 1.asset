@@ -27,13 +27,16 @@ MonoBehaviour:
   accelInAir: 0.5
   deccelInAir: 0.9
   wallCheckDistance: 0.725
-  wallSlideSpeed: 3.5
+  wallSlideSpeed: 7
   wallSlideAccel: -1
-  wallJumpDirection: 1
+  wallJumpDirection: -1
   wallJumpVector: {x: 10, y: 17}
   coyoteTime: 0.15
-  LastOnGroundTime: 0.1389627
+  LastOnGroundTime: 0.13573752
   anim: {fileID: 0}
   layerMask:
     serializedVersion: 2
     m_Bits: 1024
+  floorInXAixs: 1
+  JumpPositive: 1
+  orientation: {x: 1, y: 0}
