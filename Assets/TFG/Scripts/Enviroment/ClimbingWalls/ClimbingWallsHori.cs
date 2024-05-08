@@ -84,7 +84,6 @@ public class ClimbingWallsHori : MonoBehaviour
 
     private void ReturnToOrigPos()
     {
-        Debug.Log(hasBeenRotate);
         if (hasBeenRotate)
         {
             hasBeenRotate = false;
