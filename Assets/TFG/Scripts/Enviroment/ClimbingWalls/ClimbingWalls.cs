@@ -100,6 +100,7 @@ public class ClimbingWalls : MonoBehaviour
             yield return null;
         }
         playerScript.isWallClimbingActive = false;
+        routineRunning = null;
     }
 
 }
