@@ -34,7 +34,6 @@ public class SoundFXManager : MonoBehaviour
         audioSource.volume = volume;
         audioSource.Play();
         return audioSource.gameObject;
-        //Destroy(audioSource.gameObject, clipLength);
     }
 
 }
