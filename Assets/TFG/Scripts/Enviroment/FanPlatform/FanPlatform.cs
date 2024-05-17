@@ -59,7 +59,10 @@ public class FanPlatform : MonoBehaviour
         while (area.playerInArea && bar.CheckValidityMovement(habilityCost))
         {
             if (playerScript.isWallClimbingHoriActive || playerScript.isWallClimbingActive)
+            {
+                playerRB.velocity = Vector2.zero;
                 break;
+            }  
             float distanceToHeight = playerScript.data.floorInXAixs ? heighTransform.position.y - playerTransform.position.y : heighTransform.position.x - playerTransform.position.x;
             distanceToHeight = playerScript.data.JumpPositive ? distanceToHeight : -distanceToHeight;
             if (Mathf.Abs(distanceToHeight) > 0.5f)
@@ -67,14 +70,13 @@ public class FanPlatform : MonoBehaviour
                 if (distanceToHeight > 0)
                 {
                     Vector3 forceDirection = (directionOfWind.normalized * potency) / Mathf.Abs(distanceToHeight);
-                    playerRB.AddForce(Vector3.ClampMagnitude(forceDirection, maxForceMagnitude), ForceMode2D.Impulse);
+                    playerRB.AddForce(Vector3.ClampMagnitude(forceDirection, maxForceMagnitude), ForceMode2D.Impulse); 
                 }
                 else
                 {
                     Vector3 forceDirection = (directionOfWind.normalized * -potency * 0.85f) / Mathf.Abs(distanceToHeight);
                     playerRB.AddForce(Vector3.ClampMagnitude(forceDirection, maxForceMagnitude), ForceMode2D.Impulse);
                 }
-
             }
 
             if (firstTime)
@@ -97,7 +99,8 @@ public class FanPlatform : MonoBehaviour
                 bar.Cost(habilityCost);
                 timerCost = 0f;
             }
-            yield return null;
+            yield return new WaitForFixedUpdate();
+
         }
         Destroy(audioPlayerSFX);
         particleSystemWind.SetActive(false);

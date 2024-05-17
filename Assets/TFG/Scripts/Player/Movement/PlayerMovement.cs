@@ -311,7 +311,7 @@ public class PlayerMovement : MonoBehaviour
         }
         data.anim.SetInteger("state", (int) state);
     }
-    public void Flip()
+    private void Flip()
     {
         if (!isWallClimbingHoriActive)
         {

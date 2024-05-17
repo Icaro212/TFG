@@ -44,7 +44,21 @@ public class PauseMenuManager : MonoBehaviour
     public void ReturnMenu()
     {
         ResumeGame();
+        resetGameData();
         StartCoroutine(GameManager.instance.LoadingScene("MainMenu"));
+    }
+
+    private void resetGameData()
+    {
+        string currentLevel = SceneManager.GetActiveScene().name;
+        Dictionary<string, bool> quartzFragmentsInLevel = GameManager.instance.quartzDictPerLevel[currentLevel];
+        List<string> keys = new List<string>(quartzFragmentsInLevel.Keys);
+        foreach (string keyaux in keys)
+        {
+            quartzFragmentsInLevel[keyaux] = false;
+        }
+        GameManager.instance.quartzDictPerLevel[currentLevel] = quartzFragmentsInLevel;
+        GameManager.instance.numberOfDeathPerLevel[currentLevel] = 0;
     }
 
     public void RestartRoom()

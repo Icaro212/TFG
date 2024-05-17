@@ -125,6 +125,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   directionOfSink: {x: 0, y: -1}
-  intesity: 50
+  intesity: 15
   interval: 0.2
   sinkingClip: {fileID: 8300000, guid: 48b4db89f3e5c2b409b0190e441a1596, type: 3}

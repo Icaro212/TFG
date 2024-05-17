@@ -37,7 +37,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3598823615580569275, guid: c8f35dc70db06da4aae93f00a85fc988, type: 3}
       propertyPath: maxForceMagnitude
-      value: 0.125
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3598823615580569276, guid: c8f35dc70db06da4aae93f00a85fc988, type: 3}
       propertyPath: m_Sprite

@@ -42,15 +42,11 @@ public class Thwomp : MonoBehaviour, IRestartable
         startPosition = thwompPosition.position;
     }
 
-    private void Update()
-    {
-        Fall();
-        FollowMovement();
-    }
-
     private void FixedUpdate()
     {
         CheckingConditions();
+        Fall();
+        FollowMovement();
     }
 
     private void CheckingConditions()
@@ -112,11 +108,11 @@ public class Thwomp : MonoBehaviour, IRestartable
                 GameManager.instance.Die();
                 while (GameManager.instance.playerDying)
                 {
-                    yield return null;
+                    yield return new WaitForFixedUpdate();
                 }
                 StartCoroutine(Restart());
             }
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
         SoundFXManager.instance.PlaySoundFXClip(collisionClip, transform, 1f);
     }

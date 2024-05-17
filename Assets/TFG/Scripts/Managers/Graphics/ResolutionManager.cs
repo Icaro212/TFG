@@ -6,7 +6,8 @@ using TMPro;
 public class ResolutionManager : MonoBehaviour
 {
 
-    [SerializeField] private TMP_Dropdown resolutionDropdown;
+    [SerializeField] private TMP_Dropdown resolutionDropdownMainMenu;
+    [SerializeField] private TMP_Dropdown resolutionDropdownPauseMenu;
 
     private Resolution[] resolutions;
     private List<Resolution> filteredResolution;
@@ -19,7 +20,8 @@ public class ResolutionManager : MonoBehaviour
         resolutions = Screen.resolutions;
         filteredResolution = new List<Resolution>();
 
-        resolutionDropdown.ClearOptions();
+        resolutionDropdownMainMenu.ClearOptions();
+        resolutionDropdownPauseMenu.ClearOptions();
         currentRefreshRate = Screen.currentResolution.refreshRate;
 
         for(int i=0; i < resolutions.Length; i++)
@@ -41,9 +43,13 @@ public class ResolutionManager : MonoBehaviour
             }
         }
 
-        resolutionDropdown.AddOptions(options);
-        resolutionDropdown.value = currentResolutionIndex;
-        resolutionDropdown.RefreshShownValue();
+        resolutionDropdownMainMenu.AddOptions(options);
+        resolutionDropdownMainMenu.value = currentResolutionIndex;
+        resolutionDropdownMainMenu.RefreshShownValue();
+
+        resolutionDropdownPauseMenu.AddOptions(options);
+        resolutionDropdownPauseMenu.value = currentResolutionIndex;
+        resolutionDropdownPauseMenu.RefreshShownValue();
     }
 
     public void SetResolution(int resolutionIndex)
