@@ -44,7 +44,7 @@ public class LevelInfo : MonoBehaviour
     private string getLevel(string levelNameAux)
     {
         bool completed = GameManager.instance.levelsCompleted[levelNameAux];
-        string result = completed ? "1" : "0" + "/1";
+        string result = completed ? "1/1" : "0/1";
         return result;
     }
 

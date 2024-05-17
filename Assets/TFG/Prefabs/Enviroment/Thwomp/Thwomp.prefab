@@ -229,7 +229,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   rb: {fileID: 1952016681402625518}
-  force: {x: 0, y: 5}
+  force: {x: 0, y: 50}
   killingArea: {fileID: 1952016679973787062}
   optionalObject1:
     enabled: 0

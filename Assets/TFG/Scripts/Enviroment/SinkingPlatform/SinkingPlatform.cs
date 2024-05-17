@@ -52,7 +52,7 @@ public class SinkingPlatform : MonoBehaviour, IRestartable
         {
             yield return new WaitForSeconds(interval);
             SoundFXManager.instance.PlaySoundFXClip(sinkingClip, transform, 1f);
-            transform.Translate(directionOfSink * intesity * Time.deltaTime);
+            transform.Translate(directionOfSink * intesity * Time.fixedDeltaTime);
         }
         sinkingCourutine = null;
         goingUpCorutine = StartCoroutine(GoingUp());
@@ -64,7 +64,7 @@ public class SinkingPlatform : MonoBehaviour, IRestartable
         {
             yield return new WaitForSeconds(interval);
             SoundFXManager.instance.PlaySoundFXClip(sinkingClip, transform, 1f);
-            transform.position = Vector2.MoveTowards(transform.position, origPosition, 1.5f*intesity*Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, origPosition, 1.5f*intesity*Time.fixedDeltaTime);
         }
         goingUpCorutine = null;
     }
