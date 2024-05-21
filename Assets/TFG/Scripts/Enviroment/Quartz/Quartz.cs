@@ -27,8 +27,7 @@ public class Quartz : MonoBehaviour
         {
             anim.SetTrigger("ObjectCollected");
             SoundFXManager.instance.PlaySoundFXClip(quartzCollectedClip, transform, 1f);
-            string levelPlaying = GameManager.instance.LevelPlaying;
-            GameManager.instance.quartzDictPerLevel[levelPlaying][gameObject.name] = true;
+            GameManager.instance.quartzCollected.Add(gameObject.name);
         }
     }
 

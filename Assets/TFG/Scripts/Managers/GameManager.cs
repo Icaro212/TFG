@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour
     public Dictionary<string, int> numberOfDeathPerLevel;
     public Dictionary<string, Dictionary<string, bool>> quartzDictPerLevel;
     public Dictionary<string, bool> levelsCompleted;
+    public int currentDeathsInLevel;
+    public List<string> quartzCollected;
 
     //LevelInfoCards
     public List<LevelInfo> infoCardsLevels;
@@ -46,12 +48,12 @@ public class GameManager : MonoBehaviour
             numberOfDeathPerLevel = new Dictionary<string, int>();
             quartzDictPerLevel = new Dictionary<string, Dictionary<string, bool>>();
             levelsCompleted = new Dictionary<string, bool>();
+            StartCoroutine(GameDataCheck());
         }
         else
         {
             Destroy(this);
         }
-        StartCoroutine(GameDataCheck());
     }
 
     private void Start()
@@ -77,7 +79,7 @@ public class GameManager : MonoBehaviour
         anim.SetTrigger("death");
         script.enabled = !script.enabled;
         rb.bodyType = RigidbodyType2D.Static;
-        numberOfDeathPerLevel[LevelPlaying] += 1;
+        currentDeathsInLevel += 1;
         playerDying = true;
         col.isTrigger = true;
         SoundFXManager.instance.PlaySoundFXClip(deathClip, transform, 1f);
@@ -138,7 +140,6 @@ public class GameManager : MonoBehaviour
                 quartzDictPerLevel.Add(nameLevel, quartzDict);
             }
             SaveSystem.SaveGame();
-            objectsInRoom.Clear();
         }
         else
         {

@@ -25,9 +25,29 @@ public class BlackQuartz : MonoBehaviour
     {
         GameManager.instance.objectsInRoom.Clear();
         string currentLevel = GameManager.instance.LevelPlaying;
+
+        // Blue Quartz Fragments
+        Dictionary<string, bool> quartzFragmentsInLevel = GameManager.instance.quartzDictPerLevel[currentLevel];
+        List<string> keys = new List<string>(quartzFragmentsInLevel.Keys);
+        foreach (string keyaux in keys)
+        {
+            if (GameManager.instance.quartzCollected.Contains(keyaux))
+            {
+                quartzFragmentsInLevel[keyaux] = true;
+            }
+            
+        }
+        GameManager.instance.quartzDictPerLevel[currentLevel] = quartzFragmentsInLevel;
+
+        //Black Quartz Fragments
         GameManager.instance.levelsCompleted[currentLevel] = true;
+
+        //Death
+        GameManager.instance.numberOfDeathPerLevel[currentLevel] += GameManager.instance.currentDeathsInLevel;
         SaveSystem.SaveGame();
         SceneManager.LoadScene("MainMenu");
+        GameManager.instance.quartzCollected.Clear();
+        GameManager.instance.currentDeathsInLevel = 0;
         foreach(LevelInfo card in GameManager.instance.infoCardsLevels)
         {
             card.UpdateScore();
