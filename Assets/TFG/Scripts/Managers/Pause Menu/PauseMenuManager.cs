@@ -51,14 +51,9 @@ public class PauseMenuManager : MonoBehaviour
     private void resetGameData()
     {
         string currentLevel = SceneManager.GetActiveScene().name;
-        Dictionary<string, bool> quartzFragmentsInLevel = GameManager.instance.quartzDictPerLevel[currentLevel];
-        List<string> keys = new List<string>(quartzFragmentsInLevel.Keys);
-        foreach (string keyaux in keys)
-        {
-            quartzFragmentsInLevel[keyaux] = false;
-        }
-        GameManager.instance.quartzDictPerLevel[currentLevel] = quartzFragmentsInLevel;
-        GameManager.instance.numberOfDeathPerLevel[currentLevel] = 0;
+        GameManager.instance.quartzCollected.Clear();
+        GameManager.instance.currentDeathsInLevel = 0;
+        Physics2D.gravity = new Vector2(0, -9.81f);
     }
 
     public void RestartRoom()
