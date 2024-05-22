@@ -4426,6 +4426,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -262.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3474571604900159190, guid: d40dc2e0b2e23dd4b8e69ec4d1f71ddc, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3474571604900159190, guid: d40dc2e0b2e23dd4b8e69ec4d1f71ddc, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1213768243}
+    - target: {fileID: 3474571604900159190, guid: d40dc2e0b2e23dd4b8e69ec4d1f71ddc, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetResolution
+      objectReference: {fileID: 0}
     - target: {fileID: 4727510548263453420, guid: d40dc2e0b2e23dd4b8e69ec4d1f71ddc, type: 3}
       propertyPath: m_IsActive
       value: 1
